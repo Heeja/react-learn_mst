@@ -82,6 +82,7 @@ css code
 - animation을 아래와 같이 추가 할 수 있다.
 - 자식 요소에도 css를 적용할 수 있다.
 - 아래 코드에서 &: = span:hover 와 동일하다.
+- css와 html을 동시에 작성할 수 있다.
 
 ```javascript
 const rotateAnimation = keyframes`
@@ -112,4 +113,26 @@ const Box = styled.div`
     }
   }
 `;
+```
+
+### Theme - (for "Dark mode")
+
+- 아래 코드의 darkTheme, lightTheme 같이 property를 가진 object를 ThemeProvider를 사용해서 전달하면된다.
+- ThemeProvider 안에 App을 두어 App에서 theme 정보를 가져다 사용할 수 있게 하였다.
+
+```javascript
+import { ThemeProvider } from "styled-components";
+
+const darkTheme = {
+  textColor: "whitesmoke",
+  backgroundColor: "#111",
+};
+const lighTheme = {
+  textColor: "#111",
+  backgroundColor: "whitesmoke",
+};
+
+<ThemeProvider theme={darkTheme}>
+  <App />
+</ThemeProvider>;
 ```
