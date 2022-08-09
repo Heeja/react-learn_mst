@@ -187,3 +187,11 @@ const lighTheme = {
 ### interface
 
 - object모양을 typescript에게 설명해주는 기능
+
+### Forms type - React.FormEvent
+
+- number, string ... 일반적인 type이 아닌 라이브러리에서 지원하는 type
+- 개인이 쉽게 찾을 수 있는 부분은 아니다. Doc에서 확인 할 수 있다.
+  > 링크: https://ko.reactjs.org/docs/events.html
+
+### Themes in Typescript
