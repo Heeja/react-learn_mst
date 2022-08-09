@@ -1,14 +1,17 @@
 import React from "react";
-import ReactDOM from "react-dom";
+import ReactDOM from "react-dom/client";
 import { ThemeProvider } from "styled-components";
+import { Theme } from "./theme";
 import App from "./App";
-import { ligthTheme } from "./theme";
 
-ReactDOM.render(
+const rootId = ReactDOM.createRoot(
+  document.getElementById("root") as HTMLElement
+);
+
+rootId.render(
   <React.StrictMode>
-    <ThemeProvider theme={ligthTheme}>
+    <ThemeProvider theme={Theme}>
       <App />
     </ThemeProvider>
-  </React.StrictMode>,
-  document.getElementById("root")
+  </React.StrictMode>
 );

@@ -6,6 +6,43 @@ react app make console command
 
 > npx create-react-app "app name(directory name)" --use-npm(option)
 
+### React 18
+
+- React v18 부터 index에서 render 방식이 변경되었다.
+
+```js
+import React from "react";
+import ReactDOM from "react-dom/client";
+import { ThemeProvider } from "styled-components";
+import App from "./App";
+
+const rootId = ReactDOM.createRoot(
+  document.getElementById("root") as HTMLElement
+);
+
+rootId.render(
+    <React.StrictMode>
+        <ThemeProvider>
+            <App />
+        </ThemeProvider>
+    </React.StrictMode>
+);
+```
+
+### react-router-dom v6
+
+- **Switch**를 더이상 사용하지 않고, **Routes**로 대체한다.
+- Routes의 자식으로는 **Route**만 가능하다.
+- useParams()의 경우에도 type이 default로 지정되어있다.
+
+  그래서 아래와 같이 type을 지정해준다.
+
+  ```js
+  useParams<"coinId">();
+  ```
+
+- 다른 옵션 중에서도 사용하지 않게된 부분이 있으니 체크해보면 좋겠다.
+
 ## 1. Styled Component
 
 https://styled-components.com
@@ -195,3 +232,11 @@ const lighTheme = {
   > 링크: https://ko.reactjs.org/docs/events.html
 
 ### Themes in Typescript
+
+## React Query
+
+파프리카코인
+
+1. All coins
+2. :id > /btc > coin detail
+3. /btc/information, /btc/chart
