@@ -1,5 +1,12 @@
 # Learn React Master Class
 
+0. [Setup react-app](#0-make-react-app)
+   1. [react v18](#react-18)
+   2. [react router dom v6](#react-router-dom-v6)
+1. [Styled-Components](#1-styled-component)
+2. [Typescript](#2-typesript)
+3. [make CRYPTO-TRACKER](#3-crypto-tracker)
+
 ## 0. make react app
 
 react app make console command
@@ -174,7 +181,7 @@ const lighTheme = {
 </ThemeProvider>;
 ```
 
-## 3. Typesript
+## 2. Typesript
 
 - javascipt에서 변수에 type을 지정하는 확장된 언어.
 - strongly-typed 프로그래밍 언어이다. (javascript not strongly-typed)
@@ -233,10 +240,28 @@ const lighTheme = {
 
 ### Themes in Typescript
 
-## React Query
+## 3. CRYPTO TRACKER
 
 파프리카코인
 
 1. All coins
 2. :id > /btc > coin detail
 3. /btc/information, /btc/chart
+
+### Reset style
+
+> link: https://meyerweb.com/eric/tools/css/reset/
+
+- 브라우저에서 기본으로 설정되는 css값들에 덮어써서 초기화 시킨다.
+
+- 현재 생성한 react app 에서는 'styled components'의 GlobalStyle을 사용한다.
+  - link 페이지에서 제공하는 css style code를 복사하여 붙여넣어주면 완료.
+- 이후 프로젝터 전반적인 style을 적용하려면, 복사 붙여넣기한 부분 이후에 css를 추가하면 된다. (아마도?)
+
+```js
+const GlobalStyle = createGlobalStyle`
+    reset css code
+`;
+```
+
+### React Query
