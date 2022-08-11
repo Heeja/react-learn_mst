@@ -264,4 +264,31 @@ const GlobalStyle = createGlobalStyle`
 `;
 ```
 
+### Crypto Icon API
+
+> Link: https://coinicons-api.vercel.app
+
+- useEffct의 fetch를 통해서 api에 호출하고 데이터를 받는다.
+- 받은 데이터는 **JSON**형태로 변환하여 사용!
+- 응답을 받는거보다 코드가 진행되는 것이 보통 빠르기 때문에, **async/await**를 사용한다!
+
+```js
+useEffect(() => {
+  (async () => {
+    const res = await fetch("https://api.coinpaprika.com/v1/coins"); // api에게 요청하는 부분
+    const json = await res.json(); // json 형식으로 변환.
+    setCoins(json.slice(0, 100)); // 전체는 너무 많아서 100개만!
+  })();
+}, []);
+```
+
+### state value forward next page
+
+- 호출 받은 api 데이터를 다시 요청하는 것보다 가지고 있는 데이터를 활용하는 것이 좋다. (상황에 따라서 다를 수 있지만)
+- Link(a tag)를 통해 웹페이지를 이동할 때 값을 전달하는 방법으로 state를 사용한다.
+
+```js
+<Link to={`/${coin.id}`} state={coin.name} />
+```
+
 ### React Query
