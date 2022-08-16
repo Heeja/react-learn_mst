@@ -291,4 +291,58 @@ useEffect(() => {
 <Link to={`/${coin.id}`} state={coin.name} />
 ```
 
+> Link: https://velog.io/@ksmfou98/React-Router-v6-업데이트-정리
+> React Router v6 부터 변경된 점 체크.
+
 ### React Query
+
+- query 라이브러리를 통해서 전반적인 코드를 간략하게 할 수 있다.
+- react query는 데이터를 캐시로 저장해둔다.
+  - 그래서 페이지를 돌아가거나 할 때 데이터를 다시 불러올 필요가 없다.
+  - 브라우저를 닫거나, 캐시를 삭제하면 다시 불러온다.
+- react query는 개발자를 위한 툴도 지원하고 있다.
+  - 아래와 같이 install하고, App.tsx에 코드를 추가하면된다.
+  > npm i @tanstack/react-query-devtools
+  ```js, App.tsx
+  <ReactQueryDevtools initialIsOpen={true} />
+  ```
+
+1. 첫번째로 index.tsx에 theme과 같이 전반적으로 react query를 적용시켜준다.
+
+```js, index.tsx
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+
+<QueryClientProvider client={queryClient}>
+    <ThemeProvider theme={Theme}>
+        <App />
+    </ThemeProvider>
+</QueryClientProvider>
+```
+
+```js, api.tsx
+export async function fetchCoins() {
+  return fetch("https://api.coinpaprika.com/v1/coins").then((res) =>
+    res.json()
+  );
+}
+```
+
+```js, Coins.tsx
+// before
+const [coins, setCoins] = useState<CoinInterface[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    (async () => {
+      const res = await fetch("https://api.coinpaprika.com/v1/coins");
+      const json = await res.json();
+      setCoins(json.slice(0, 100));
+      setLoading(false);
+    })();
+  }, []);
+
+// after
+import { fetchCoins } from "../api";
+
+const { isLoading, data } = useQuery<CoinInterface[]>(["coins"], fetchCoins);
+```
