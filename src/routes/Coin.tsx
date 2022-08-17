@@ -239,20 +239,17 @@ function Coin() {
           </ColorBox>
 
           <Tabs>
-            <Tab isActive={priceMatch !== null}>
-              <Link to="price">Price</Link>
-            </Tab>
             <Tab isActive={chartMatch !== null}>
               <Link to="chart">Chart</Link>
+            </Tab>
+            <Tab isActive={priceMatch !== null}>
+              <Link to="price">Price</Link>
             </Tab>
           </Tabs>
 
           <Routes>
-            <Route path={`/:coinId/price`} element={<Price />} />
-            <Route
-              path={`/:coinId/chart`}
-              element={<Chart coinId={coinId} />}
-            />
+            <Route path="price" element={<Price />} />
+            <Route path="chart" element={<Chart coinId={coinId} />} />
           </Routes>
         </>
       )}
