@@ -14,6 +14,8 @@ import { Helmet } from "react-helmet";
 import Price from "./Price";
 import Chart from "./Chart";
 import { fetchCoinInfo, fetchCoinTickers } from "../api";
+import { useRecoilValue, useSetRecoilState } from "recoil";
+import { isDarkAtom } from "../atoms";
 
 const Container = styled.div`
   padding: 0px 20px;
@@ -169,6 +171,8 @@ interface PriceData {
   total_supply: number;
 }
 
+interface ICoinProps {}
+
 function Coin() {
   const { coinId } = useParams() as unknown as RouteParams;
   const { state } = useLocation() as RouteState;
@@ -206,6 +210,10 @@ function Coin() {
 
   const loading = infoLoading || tickersLoading;
 
+  const setDartAtom = useSetRecoilState(isDarkAtom);
+  const toggleDarkAtom = () => setDartAtom((prev) => !prev);
+  const isDark = useRecoilValue(isDarkAtom);
+
   return (
     <Container>
       <Helmet>
@@ -214,6 +222,9 @@ function Coin() {
       </Helmet>
       <Header>
         <Title>Coin</Title>
+        <button onClick={toggleDarkAtom}>
+          {isDark ? "Dark Mode" : "Light Mode"}
+        </button>
       </Header>
       {loading ? (
         <Loader>Loading...</Loader>

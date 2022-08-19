@@ -302,7 +302,7 @@ useEffect(() => {
   - 브라우저를 닫거나, 캐시를 삭제하면 다시 불러온다.
 - react query는 개발자를 위한 툴도 지원하고 있다.
   - 아래와 같이 install하고, App.tsx에 코드를 추가하면된다.
-  > npm i @tanstack/react-query-devtools
+    > npm i @tanstack/react-query-devtools
   ```js, App.tsx
   <ReactQueryDevtools initialIsOpen={true} />
   ```
@@ -346,3 +346,33 @@ import { fetchCoins } from "../api";
 
 const { isLoading, data } = useQuery<CoinInterface[]>(["coins"], fetchCoins);
 ```
+
+### Recoil (Library)
+
+- Homepage
+
+  > https://recoiljs.org/ko/
+
+- React를 위한 상태 관리 라이브러리
+- install
+
+  > npm install recoil
+
+  > yarn add recoil
+
+#### Using
+
+- atoms.ts 파일을 생성한다.
+
+```ts, atoms.ts
+import { atom } from "recoil";
+
+export const isDarkAtom = atom({
+  key: "isDark",
+  default: false,
+});
+
+```
+
+- export로 파일 외부로 나갈 수 있게 선언하고, 변수 명을 정하여 선언.
+- 변수는 **atom({})** 형식으로, 중괄호{} 안에 key(상태값 이름)와 default(기본 상태값)을 넣어준다.
