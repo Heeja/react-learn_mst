@@ -351,7 +351,7 @@ const { isLoading, data } = useQuery<CoinInterface[]>(["coins"], fetchCoins);
 
 - Homepage
 
-  > https://recoiljs.org/ko/
+  > Link: https://recoiljs.org/ko/
 
 - React를 위한 상태 관리 라이브러리
 - install
@@ -376,3 +376,57 @@ export const isDarkAtom = atom({
 
 - export로 파일 외부로 나갈 수 있게 선언하고, 변수 명을 정하여 선언.
 - 변수는 **atom({})** 형식으로, 중괄호{} 안에 key(상태값 이름)와 default(기본 상태값)을 넣어준다.
+
+### React Hook Form (Management Library)
+
+> Link: https://react-hook-form.com
+
+- Install
+  > npm install react-hook-form
+
+```tsx, ToDoList.tsx
+const { register, watch, handleSubmit, formState } = useForm();
+```
+
+#### resister
+
+- onChange을 대체한다. useState도 없다.
+- 구성
+  - onBlur: 입력란에
+  - onChange
+  - ref
+
+#### watch
+
+- form에서 입력되는 값을 모니터링한다.
+- form 안에 input의 value를 object 형식으로 체크된다.
+
+#### handleSubmit
+
+- validation를 담당한다. (preventDefault 등)
+- form의 유효하지 않은 상태를 보호한다.
+- onValid: submit이 해야하는 일을 모두 마치고, 데이터가 유효할 떄 호출된다.
+- input option
+  - required: 필수 입력
+  - minlength: 최소 글자 수 옵션
+
+```tsx
+<form onSubmit={handleSubmit(onValid)}>
+  <input {...register("Email", { required: true, minlength: 10 })} />
+</form>
+```
+
+#### FormState
+
+- form 상태 체크
+- formState.errors: 에러(입력 양식을 따르지 않는것도 포함하여) 발생시 에러부분 안내
+- message로 에러 메시지를 알려줄 수 있다. (표기방법 아래 코드 확인)
+
+```tsx
+{ required: "비밀번호를 반드시 입력해주세요.",
+  minLength: {
+      value: 8,
+      message: "비밀번호는 최소 8자 입니다."
+} }
+
+```
