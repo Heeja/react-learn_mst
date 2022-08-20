@@ -412,8 +412,19 @@ const { register, watch, handleSubmit, formState } = useForm();
 
 ```tsx
 <form onSubmit={handleSubmit(onValid)}>
-  <input {...register("Email", { required: true, minlength: 10 })} />
+  <input {...register("email", { required: true, minlength: 10 })} />
 </form>
+```
+
+#### setValue
+
+- register를 사용한 태그의 value값을 정해준다.
+- handleSubmit에 사용되는 function에서 사용해주면 form data를 전달하고 값을 초기화 해줄 수 있다.
+
+```jsx
+const onValid = () => {
+  setValue("email", "");
+};
 ```
 
 #### FormState
@@ -441,7 +452,7 @@ const { register, watch, handleSubmit, formState } = useForm();
 
 ```jsx
 <input
-  {...register("Email", {
+  {...register("email", {
     required: true,
     pattern: {
       value: /^[A-Za-z0-9._%+-]+naver.com$/,
