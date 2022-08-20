@@ -36,14 +36,48 @@ import { useForm } from "react-hook-form";
 //   );
 // }
 
+interface IFormData {
+  errors: {
+    email: { message: string };
+  };
+  email: string;
+  firstName: string;
+  lastName: string;
+  password: string;
+  passwordCheck: string;
+  userName: string;
+  extraError?: string;
+}
+
 function ToDoList() {
-  const { register, handleSubmit, formState } = useForm();
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+    setError,
+  } = useForm<IFormData>({
+    defaultValues: {
+      email: "@naver.com",
+    },
+  });
 
   const onValid = (data: any) => {
-    console.log(data);
+    if (data.password !== data.passwordCheck) {
+      setError(
+        "password",
+        {
+          message: "입력한 패스워드가 같지 않습니다.",
+        },
+        { shouldFocus: true }
+      );
+      setError("passwordCheck", {
+        message: "입력한 패스워드가 같지 않습니다.",
+      });
+    }
+    // setError("extraError", { message: "Server Error" });
   };
 
-  console.log(formState.errors);
+  //   console.log(errors);
 
   return (
     <div>
@@ -52,42 +86,66 @@ function ToDoList() {
         onSubmit={handleSubmit(onValid)}
       >
         <input
-          {...register("Email", { required: true })}
-          required
+          {...register("email", {
+            required: "Email required",
+            pattern: {
+              value: /^[A-Za-z0-9._%+-]+@ naver.com$/,
+              message: "이메일 형식에 맞도록 입력해주세요.",
+            },
+          })}
           type="text"
           placeholder="Email"
         />
+        <span>{errors?.email?.message}</span>
         <input
-          {...register("First name", { required: true })}
+          {...register("firstName", {
+            required: "Write here",
+            validate: {
+              noMaster: (value) =>
+                value.includes("master") ? "no master allowed" : true,
+              noNiAny: (value) =>
+                value.includes("ni") ? "no ni* allowed" : true,
+            },
+          })}
           type="text"
           placeholder="First Name"
         />
+        <span>{errors?.firstName?.message}</span>
         <input
-          {...register("Last name", { required: true })}
+          {...register("lastName", { required: "Write here" })}
           type="text"
           placeholder="Last Name"
         />
+        <span>{errors?.lastName?.message}</span>
         <input
-          {...register("User name", {
-            required: true,
+          {...register("userName", {
+            required: "Write here",
             minLength: { value: 10, message: "최소 10글자를 입력하세요." },
           })}
           type="text"
           placeholder="User Name"
         />
+        <span>{errors?.userName?.message}</span>
         <input
-          {...register("Password", {
+          {...register("password", {
             required: "비밀번호를 반드시 입력해주세요.",
+            minLength: 8,
           })}
           type="password"
           placeholder="PW"
         />
+        <span>{errors?.password?.message}</span>
         <input
-          {...register("Password check", { required: true })}
+          {...register("passwordCheck", {
+            required: "Write here",
+            minLength: 8,
+          })}
           type="password"
           placeholder="PW check"
         />
+        <span>{errors?.passwordCheck?.message}</span>
         <button>Add</button>
+        <span>{errors?.extraError?.message}</span>
       </form>
     </div>
   );

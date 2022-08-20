@@ -377,7 +377,7 @@ export const isDarkAtom = atom({
 - export로 파일 외부로 나갈 수 있게 선언하고, 변수 명을 정하여 선언.
 - 변수는 **atom({})** 형식으로, 중괄호{} 안에 key(상태값 이름)와 default(기본 상태값)을 넣어준다.
 
-### React Hook Form (Management Library)
+## React Hook Form (Management Library)
 
 > Link: https://react-hook-form.com
 
@@ -419,8 +419,10 @@ const { register, watch, handleSubmit, formState } = useForm();
 #### FormState
 
 - form 상태 체크
+- 너무 많은 form을 관리/체크해야 한다면 사용해보는 것이 좋을 것 같다.
 - formState.errors: 에러(입력 양식을 따르지 않는것도 포함하여) 발생시 에러부분 안내
 - message로 에러 메시지를 알려줄 수 있다. (표기방법 아래 코드 확인)
+  - required: 2가지 표기법. 메시지를 직접 입력하거나, true/false로 입력할 수 있다.
 
 ```tsx
 { required: "비밀번호를 반드시 입력해주세요.",
@@ -429,4 +431,67 @@ const { register, watch, handleSubmit, formState } = useForm();
       message: "비밀번호는 최소 8자 입니다."
 } }
 
+```
+
+#### RegEx(Regular Expressions)
+
+- 입력되는 문자를 검수한다.
+- 검수하는 이유는 SQL Injection 또는 Javascript 실행 등의 공격에 대비하기 위함이다.
+- 입력 방법은 아래 코드 **pattern** 부분을 참고
+
+```jsx
+<input
+  {...register("Email", {
+    required: true,
+    pattern: {
+      value: /^[A-Za-z0-9._%+-]+naver.com$/,
+      message: "이메일 형식에 맞도록 입력해주세요.",
+    },
+  })}
+  required
+  type="text"
+  placeholder="Email"
+/>
+```
+
+#### setError
+
+> react-hook-form에서 return이 string이면 string이 message가 된다!
+
+- form으로 전송된 데이터를 검증하면서 에러 메시지를 전달한다.
+  - 조건을 통해 setError가 발생하도록 한다.
+  - shouldFocus 옵션을 통해 입력 커서를 자동으로 줄 수 있다.
+  - extraError의 경우 서버로부터 응답이 없을 경우 발생.
+- 표기법은 아래 코드 참고.
+
+```jsx
+const onValid = (data: any) => {
+  if (data.password !== data.passwordCheck) {
+    setError(
+      "password",
+      {
+        message: "입력한 패스워드가 같지 않습니다.",
+      },
+      { shouldFocus: true }
+    );
+    setError("passwordCheck", {
+      message: "입력한 패스워드가 같지 않습니다.",
+    });
+  }
+  // setError("extraError", { message: "Server Error" });
+};
+```
+
+#### Custom Validation
+
+- 태그 register에 옵션에 **validate**를 사용하여 문자열을 검수할 수 있다.
+- includes에 들어간 문자열이 포함되면(시작,중간,끝 모두) message 발생.
+
+```jsx
+validate: {
+  noMaster: (value) =>
+    value.includes("master") ? "no master allowed" : true,
+  noNiAny: (value) =>
+    value.includes("ni") ? "no ni* allowed" : true,
+}
 ```
