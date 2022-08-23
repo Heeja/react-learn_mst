@@ -1,4 +1,3 @@
-import { trace } from "console";
 import { useSetRecoilState } from "recoil";
 import { Categories, IToDo, toDoState } from "../atoms";
 
@@ -21,6 +20,13 @@ function ToDo({ text, id, category }: IToDo) {
     });
   };
 
+  const deleteToDo = () => {
+    setToDos((filterToDos) => {
+      //   console.log(filterToDos.filter((todo) => todo.id !== id));
+      return filterToDos.filter((todo) => todo.id !== id);
+    });
+  };
+
   return (
     <li>
       <span>{text}</span>
@@ -39,6 +45,7 @@ function ToDo({ text, id, category }: IToDo) {
           Done
         </button>
       )}
+      <button onClick={deleteToDo}>Delete</button>
     </li>
   );
 }
