@@ -4,6 +4,7 @@ import styled from "styled-components";
 
 import { toDoState } from "./atoms";
 import Card from "./component/Card";
+import Board from "./component/Board";
 
 const Ddcon = styled.div`
   background-color: #72a0f5;
@@ -15,53 +16,54 @@ const Ddcon = styled.div`
 const Boards = styled.div`
   display: grid;
   width: 100%;
-  grid-template-columns: repeat(1, 1fr);
-`;
-const DropBoard = styled.ul`
-  background-color: #ffc191;
-  border-radius: 4px;
-  padding: 5px 0;
-`;
-
-const BoardCategory = styled.h2`
-  text-size: 20px;
-  text-align: center;
-  margin-bottom: 10px;
+  gap: 10px;
+  grid-template-columns: repeat(3, 1fr);
 `;
 
 function App() {
-  const [toDo, setTodo] = useRecoilState(toDoState);
-  const onDragEnd = ({ draggableId, destination, source }: DropResult) => {
+  const [toDos, setTodos] = useRecoilState(toDoState);
+
+  const onDragEnd = (info: DropResult) => {
+    console.log(info);
+    const { destination, draggableId, source } = info;
     if (!destination) return;
 
-    setTodo((oldTodo) => {
-      const cpTodo = [...oldTodo];
-      const dragvalue = draggableId;
-      const sIndex = source.index;
-      const dIndex = destination.index;
+    if (destination.droppableId === source.droppableId) {
+      setTodos((e) => {
+        const dropId = destination.droppableId;
+        const cpboard = [...e[dropId]];
+        // console.log(cpTodos);
+        cpboard.splice(source.index, 1);
+        cpboard.splice(destination.index, 0, draggableId);
+        // console.log(cpboard);
+        return { ...e, [source.droppableId]: cpboard };
+      });
+    }
 
-      cpTodo.splice(sIndex, 1);
-      cpTodo.splice(dIndex, 0, dragvalue);
+    if (destination.droppableId != source.droppableId) {
+      setTodos((e) => {
+        const sourBoard = [...e[source.droppableId]];
+        const desBoard = [...e[destination.droppableId]];
+        // console.log(cpTodos);
+        sourBoard.splice(source.index, 1);
+        desBoard.splice(destination.index, 0, draggableId);
 
-      return cpTodo;
-    });
+        return {
+          ...e,
+          [source.droppableId]: sourBoard,
+          [destination.droppableId]: desBoard,
+        };
+      });
+    }
   };
 
   return (
     <DragDropContext onDragEnd={onDragEnd}>
       <Ddcon>
         <Boards>
-          <Droppable droppableId="drop-01">
-            {(magic) => (
-              <DropBoard ref={magic.innerRef} {...magic.droppableProps}>
-                <BoardCategory> Category </BoardCategory>
-                {toDo.map((toDo, index) => (
-                  <Card key={toDo} toDo={toDo} index={index} />
-                ))}
-                {magic.placeholder}
-              </DropBoard>
-            )}
-          </Droppable>
+          {Object.keys(toDos).map((boardId) => (
+            <Board boardId={boardId} toDos={toDos[boardId]} key={boardId} />
+          ))}
         </Boards>
       </Ddcon>
     </DragDropContext>
