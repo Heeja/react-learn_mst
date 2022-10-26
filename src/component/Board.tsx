@@ -1,5 +1,8 @@
+import React, { useState } from "react";
 import { Droppable } from "react-beautiful-dnd";
 import styled from "styled-components";
+
+import { IBoardProps, ITodosProps } from "../atoms";
 
 import Card from "./Card";
 
@@ -7,6 +10,10 @@ const DropBoard = styled.ul`
   background-color: #ffc191;
   border-radius: 4px;
   padding: 5px 0;
+  min-height: 100px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 `;
 
 const CategoryName = styled.h2`
@@ -15,17 +22,50 @@ const CategoryName = styled.h2`
   margin-bottom: 10px;
 `;
 
-interface IBoardProps {
-  toDos: string[];
-  boardId: string;
-}
+const FormBoard = styled.form`
+  width: 90%;
+  text-align: center;
+`;
 
-function Board({ boardId, toDos }: IBoardProps) {
+const AddCard = styled.input`
+  width: inherit;
+`;
+
+function Board({ boardId, toDos, setTodos }: IBoardProps) {
+  const [cardName, setCardname] = useState("");
+  // console.log(cardName);
+
+  const onChange = (e: React.FormEvent<HTMLInputElement>) => {
+    const {
+      currentTarget: { value },
+    } = e;
+    setCardname(value);
+  };
+  const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    setTodos((e: ITodosProps) => {
+      const sourBoard = [...e[boardId], cardName];
+      setCardname("");
+      return { ...e, [boardId]: sourBoard };
+    });
+  };
+
   return (
     <Droppable droppableId={boardId}>
       {(magic) => (
         <DropBoard ref={magic.innerRef} {...magic.droppableProps}>
           <CategoryName>{boardId}</CategoryName>
+
+          <FormBoard onSubmit={onSubmit}>
+            <AddCard
+              value={cardName}
+              onChange={onChange}
+              type="text"
+              name="addCard"
+              placeholder="Add Card..."
+            />
+          </FormBoard>
+
           {toDos.map((toDos, index) => (
             <Card key={toDos} toDo={toDos} index={index} />
           ))}

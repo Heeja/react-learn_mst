@@ -13,6 +13,7 @@ const Todocard = styled.li`
   text-align: center;
   padding: 2px 0;
   margin: 2px 10px;
+  width: 90%;
 `;
 
 function Card({ toDo, index }: ICardProp) {

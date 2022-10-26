@@ -1,14 +1,26 @@
-import { atom, selector } from "recoil";
+import { atom } from "recoil";
 
-interface ITodosProps {
+export interface ITodosProps {
   [key: string]: string[];
+}
+
+export interface ICategoryProps {
+  toDos: string[];
+  boardId: string;
+  index: number;
+  setTodos: any;
+}
+export interface IBoardProps {
+  toDos: string[];
+  boardId: string;
+  setTodos: any;
 }
 
 export const toDoState = atom<ITodosProps>({
   key: "toDos",
   default: {
     to_do: ["h", "e", "l", "o", "w", "y"],
-    doing: ["2"],
-    done: ["3"],
+    doing: ["1", "2", "3"],
+    done: ["ㅁ", "ㄴ", "ㅇ"],
   },
 });
