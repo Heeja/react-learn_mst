@@ -67,7 +67,13 @@ function Board({ boardId, toDos, setTodos }: IBoardProps) {
           </FormBoard>
 
           {toDos.map((toDos, index) => (
-            <Card key={toDos} toDo={toDos} index={index} />
+            <Card
+              key={toDos}
+              toDo={toDos}
+              index={index}
+              setTodos={setTodos}
+              boardId={boardId}
+            />
           ))}
           {magic.placeholder}
         </DropBoard>

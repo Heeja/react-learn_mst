@@ -19,6 +19,19 @@ const CategoryBoard = styled.div`
   justify-content: center;
 `;
 
+const Trash = styled.div`
+  width: 80px;
+  height: 40px;
+  position: absolute;
+  top: 30px;
+  right: 10px;
+  background-color: snow;
+  border-radius: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
+
 function App() {
   const [toDos, setTodos] = useRecoilState(toDoState);
   // console.log(toDos);
@@ -74,6 +87,9 @@ function App() {
         <Droppable droppableId="Board">
           {(magic) => (
             <CategoryBoard ref={magic.innerRef} {...magic.droppableProps}>
+              <Trash key="Trash">
+                <p>Trash</p>
+              </Trash>
               {categorysId.map((boardId, index) => (
                 <Categorys
                   toDos={toDos[boardId]}
