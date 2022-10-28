@@ -4,6 +4,7 @@ import styled from "styled-components";
 
 import { toDoState } from "./atoms";
 import Categorys from "./component/Categorys";
+import React, { useState } from "react";
 
 const Ddcon = styled.div`
   background-color: #72a0f5;
@@ -16,7 +17,9 @@ const CategoryBoard = styled.div`
   width: 100%;
   margin: 0 10px;
   display: flex;
-  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+  // justify-content: center;
 `;
 
 const Trash = styled.div`
@@ -32,11 +35,32 @@ const Trash = styled.div`
   align-items: center;
 `;
 
+const AddCategory = styled.form`
+  width: 120px;
+  height: 30px;
+  border-radius: 10px;
+`;
+
+const CategoryBox = styled.div`
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+`;
+
 function App() {
   const [toDos, setTodos] = useRecoilState(toDoState);
   // console.log(toDos);
   const categorysId = Object.keys(toDos);
   // console.log(categorysId);
+  const [addCateg, setCateg] = useState("");
+  // console.log(addCateg);
+
+  const onChange = (e: React.FormEvent<HTMLInputElement>) => {
+    const {
+      currentTarget: { value },
+    } = e;
+    setCateg(value);
+  };
 
   const onDragEnd = (info: DropResult) => {
     console.log(info);
@@ -81,23 +105,51 @@ function App() {
     }
   };
 
+  const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const keysArr = Object.keys(toDos);
+    setCateg("");
+    if (!keysArr.includes(addCateg)) {
+      setTodos((e) => {
+        const newCateg: string[] = [];
+        setCateg("");
+        return {
+          ...e,
+          [addCateg]: newCateg,
+        };
+      });
+    } else {
+      return alert("이미 등록된 Category");
+    }
+  };
+
   return (
     <DragDropContext onDragEnd={onDragEnd}>
       <Ddcon>
         <Droppable droppableId="Board">
           {(magic) => (
             <CategoryBoard ref={magic.innerRef} {...magic.droppableProps}>
+              <AddCategory onSubmit={onSubmit}>
+                <input
+                  type="form"
+                  placeholder="Add Categorys"
+                  value={addCateg}
+                  onChange={onChange}
+                />
+              </AddCategory>
               <Trash key="Trash">
                 <p>Trash</p>
               </Trash>
-              {categorysId.map((boardId, index) => (
-                <Categorys
-                  toDos={toDos[boardId]}
-                  boardId={boardId}
-                  index={index}
-                  setTodos={setTodos}
-                />
-              ))}
+              <CategoryBox>
+                {categorysId.map((boardId, index) => (
+                  <Categorys
+                    toDos={toDos[boardId]}
+                    boardId={boardId}
+                    index={index}
+                    setTodos={setTodos}
+                  />
+                ))}
+              </CategoryBox>
               {magic.placeholder}
             </CategoryBoard>
           )}

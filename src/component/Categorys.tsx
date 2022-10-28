@@ -9,6 +9,7 @@ const Category = styled.div`
   width: 120px;
   display: flex;
   flex-direction: column;
+  margin: 0 10px;
 `;
 
 function Categorys({ toDos, boardId, index, setTodos }: ICategoryProps) {
