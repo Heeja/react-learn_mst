@@ -49,7 +49,8 @@ const CategoryBox = styled.div`
 
 function App() {
   const [toDos, setTodos] = useRecoilState(toDoState);
-  // console.log(toDos);
+  console.log(toDos);
+  console.log(typeof toDos.to_do);
   const categorysId = Object.keys(toDos);
   // console.log(categorysId);
   const [addCateg, setCateg] = useState("");

@@ -43,11 +43,16 @@ function Board({ boardId, toDos, setTodos }: IBoardProps) {
   };
   const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    setTodos((e: ITodosProps) => {
-      const sourBoard = [...e[boardId], cardName];
+    if (!toDos.includes(cardName)) {
+      setTodos((e: ITodosProps) => {
+        const sourBoard = [...e[boardId], cardName];
+        setCardname("");
+        return { ...e, [boardId]: sourBoard };
+      });
+    } else {
       setCardname("");
-      return { ...e, [boardId]: sourBoard };
-    });
+      return alert("같은 이름의 카드가 등록되어있습니다.");
+    }
   };
 
   return (

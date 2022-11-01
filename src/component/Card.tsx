@@ -34,6 +34,10 @@ const DelBtn = styled.button`
   border-radius: 5px;
   display: flex;
   justify-content: center;
+  visibility: hidden;
+  hover: {
+    visibility: visible;
+  }
 `;
 
 function Card({ toDo, index, setTodos, boardId }: ICardProp) {
@@ -53,7 +57,7 @@ function Card({ toDo, index, setTodos, boardId }: ICardProp) {
           {...magic.dragHandleProps}
         >
           <CardTitle>{toDo}</CardTitle>
-          <DelBtn type="button" onClick={onClick}>
+          <DelBtn type="button" onClick={onClick} hidden>
             <p>X</p>
           </DelBtn>
         </Todocard>
