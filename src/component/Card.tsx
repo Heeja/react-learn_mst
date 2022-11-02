@@ -20,6 +20,10 @@ const Todocard = styled.li`
   display: flex;
   justify-content: center;
   align-items: center;
+  &:hover > button {
+    display: flex;
+    visibility: visible;
+  }
 `;
 
 const CardTitle = styled.p`
@@ -32,12 +36,9 @@ const DelBtn = styled.button`
   background-color: #9b35ff;
   color: snow;
   border-radius: 5px;
-  display: flex;
+  display: none;
   justify-content: center;
   visibility: hidden;
-  hover: {
-    visibility: visible;
-  }
 `;
 
 function Card({ toDo, index, setTodos, boardId }: ICardProp) {
@@ -57,7 +58,7 @@ function Card({ toDo, index, setTodos, boardId }: ICardProp) {
           {...magic.dragHandleProps}
         >
           <CardTitle>{toDo}</CardTitle>
-          <DelBtn type="button" onClick={onClick} hidden>
+          <DelBtn onClick={onClick}>
             <p>X</p>
           </DelBtn>
         </Todocard>
