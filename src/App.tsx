@@ -12,6 +12,7 @@ const Ddcon = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
+  flex-direction: column;
 `;
 const CategoryBoard = styled.div`
   width: 100%;
@@ -49,8 +50,7 @@ const CategoryBox = styled.div`
 
 function App() {
   const [toDos, setTodos] = useRecoilState(toDoState);
-  console.log(toDos);
-  console.log(typeof toDos.to_do);
+  // console.log(toDos);
   const categorysId = Object.keys(toDos);
   // console.log(categorysId);
   const [addCateg, setCateg] = useState("");
@@ -64,19 +64,24 @@ function App() {
   };
 
   const onDragEnd = (info: DropResult) => {
-    console.log(info);
+    // console.log(info);
     const { destination, draggableId, source } = info;
     if (!destination) return;
 
-    if (source.droppableId === "Board") {
-      setTodos((e) => {
-        const dropId = destination.droppableId;
-        const objKeys = Object.keys(e); // to_do, doing, done
-        const newObj = new Object();
+    // if (destination.droppableId === "delete") {
+    //   setTodos((e) => {
+    //     const dropId = source.droppableId;
+    //     const cpboard = [...e[dropId]];
 
-        return { ...e };
-      });
-    }
+    //     cpboard.splice(source.index, 1);
+    //     console.log(dropId);
+    //     console.log(cpboard);
+
+    //     return { ...e, [source.droppableId]: cpboard };
+    //   });
+    // }
+
+    // Card - same category move
     if (destination.droppableId === source.droppableId) {
       setTodos((e) => {
         const dropId = destination.droppableId;
@@ -89,14 +94,17 @@ function App() {
       });
     }
 
-    if (destination.droppableId !== source.droppableId) {
+    // Card - other category move
+    if (
+      destination.droppableId !== source.droppableId &&
+      destination.droppableId !== "Board"
+    ) {
+      // console.log(destination);
       setTodos((e) => {
         const sourBoard = [...e[source.droppableId]];
         const desBoard = [...e[destination.droppableId]];
-        // console.log(cpTodos);
         sourBoard.splice(source.index, 1);
         desBoard.splice(destination.index, 0, draggableId);
-
         return {
           ...e,
           [source.droppableId]: sourBoard,
@@ -127,21 +135,20 @@ function App() {
   return (
     <DragDropContext onDragEnd={onDragEnd}>
       <Ddcon>
+        <AddCategory key={"FormBox"} onSubmit={onSubmit}>
+          <input
+            placeholder="Add Categorys"
+            value={addCateg}
+            onChange={onChange}
+          />
+        </AddCategory>
         <Droppable droppableId="Board">
           {(magic) => (
             <CategoryBoard ref={magic.innerRef} {...magic.droppableProps}>
-              <AddCategory onSubmit={onSubmit}>
-                <input
-                  type="form"
-                  placeholder="Add Categorys"
-                  value={addCateg}
-                  onChange={onChange}
-                />
-              </AddCategory>
-              <Trash key="Trash">
-                <p>Trash</p>
-              </Trash>
               <CategoryBox>
+                <Trash>
+                  <p>Trash</p>
+                </Trash>
                 {categorysId.map((boardId, index) => (
                   <Categorys
                     toDos={toDos[boardId]}

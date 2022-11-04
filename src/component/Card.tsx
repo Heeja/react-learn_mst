@@ -42,7 +42,7 @@ const DelBtn = styled.button`
 `;
 
 function Card({ toDo, index, setTodos, boardId }: ICardProp) {
-  const onClick = (e: React.FormEvent<HTMLButtonElement>) => {
+  const onClick = () => {
     setTodos((e: ITodosProps) => {
       const sourBoard = [...e[boardId]];
       sourBoard.splice(index, 1);

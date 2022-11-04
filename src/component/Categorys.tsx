@@ -21,12 +21,7 @@ function Categorys({ toDos, boardId, index, setTodos }: ICategoryProps) {
           {...magic.draggableProps}
           {...magic.dragHandleProps}
         >
-          <Board
-            boardId={boardId}
-            toDos={toDos}
-            key={boardId}
-            setTodos={setTodos}
-          />
+          <Board boardId={boardId} toDos={toDos} setTodos={setTodos} />
         </Category>
       )}
     </Draggable>

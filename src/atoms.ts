@@ -19,8 +19,9 @@ export interface IBoardProps {
 export const toDoState = atom<ITodosProps>({
   key: "toDos",
   default: {
-    to_do: ["h", "e", "l", "o", "w", "y"],
+    todo: ["h", "e", "l", "o", "w", "y"],
     doing: ["1", "2", "3"],
     done: ["ㅁ", "ㄴ", "ㅇ"],
+    delete: [],
   },
 });
