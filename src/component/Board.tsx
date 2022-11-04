@@ -43,7 +43,10 @@ function Board({ boardId, toDos, setTodos }: IBoardProps) {
   };
   const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    if (!toDos.includes(cardName)) {
+    // console.log(cardName === "");
+    if (cardName === "") {
+      return alert("카드 이름을 입력해주세요.");
+    } else if (!toDos.includes(cardName)) {
       setTodos((e: ITodosProps) => {
         const sourBoard = [...e[boardId], cardName];
         setCardname("");
