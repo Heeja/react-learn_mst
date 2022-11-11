@@ -1,4 +1,9 @@
 import { useNavigate } from "react-router-dom";
+import styled from "styled-components";
+
+const TopHeader = styled.header`
+  margin: 5px 0;
+`;
 
 function Header() {
   const navigate = useNavigate();
@@ -6,20 +11,11 @@ function Header() {
   const onHomeLink = () => {
     navigate("/");
   };
-  const onAboutLink = () => {
-    navigate("/about");
-  };
+
   return (
-    <header>
-      <ul>
-        <li>
-          <button onClick={onHomeLink}>Home</button>
-        </li>
-        <li>
-          <button onClick={onAboutLink}>About</button>
-        </li>
-      </ul>
-    </header>
+    <TopHeader>
+      <button onClick={onHomeLink}>Home</button>
+    </TopHeader>
   );
 }
 

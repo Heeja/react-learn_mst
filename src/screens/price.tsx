@@ -4,13 +4,13 @@ interface IuserName {
   name: string;
 }
 
-function Followers() {
+function Price() {
   const { name } = useOutletContext<IuserName>();
   return (
     <div>
-      <h1>User {name}의 followers</h1>
+      <h1>Coin {name}의 price info</h1>
     </div>
   );
 }
 
-export default Followers;
+export default Price;
