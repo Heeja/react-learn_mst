@@ -1,8 +1,8 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
-import { ThemeProvider } from "styled-components";
-import { Theme } from "./theme";
-import App from "./App";
+import { RouterProvider } from "react-router-dom";
+
+import router from "./Router";
 
 const rootId = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement
@@ -10,8 +10,6 @@ const rootId = ReactDOM.createRoot(
 
 rootId.render(
   <React.StrictMode>
-    <ThemeProvider theme={Theme}>
-      <App />
-    </ThemeProvider>
+    <RouterProvider router={router} />
   </React.StrictMode>
 );
