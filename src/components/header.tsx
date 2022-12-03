@@ -1,31 +1,27 @@
-import React from "react";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import styled from "styled-components";
 
-const Nav = styled.ul`
+const Nav = styled.div`
   display: flex;
+  justify-content: flex-start;
 `;
 
-const NavLink = styled.li`
+const NavLink = styled.div`
   margin: 5px 10px;
 `;
 
 function Header() {
+  const path = useLocation();
+
   return (
     <>
       <Nav>
-        <NavLink>
-          <Link to={"/"}>Home</Link>
-        </NavLink>
-        <NavLink>
-          <Link to={"/Coins"}>Coins</Link>
-        </NavLink>
-        <NavLink>
-          <Link to={"/Todos"}>Todos</Link>
-        </NavLink>
-        <NavLink>
-          <Link to={"/Noflix"}>Noflix</Link>
-        </NavLink>
+        <Link to={"/"}>
+          <NavLink>Home</NavLink>
+        </Link>
+        {path.pathname === "/Coins" ? <></> : null}
+        {path.pathname === "/Todos" ? <></> : null}
+        {path.pathname === "/Noflix" ? <></> : null}
       </Nav>
     </>
   );
