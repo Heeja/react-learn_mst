@@ -17,7 +17,9 @@ function Header() {
     <>
       <Nav>
         <Link to={"/"}>
-          <NavLink>Home</NavLink>
+          <NavLink>
+            <h1>Home</h1>
+          </NavLink>
         </Link>
         {path.pathname === "/Coins" ? <></> : null}
         {path.pathname === "/Todos" ? <></> : null}
