@@ -45,16 +45,6 @@ function Todos() {
 
   const todosKeys = Object.keys(todosList);
 
-  // if (todosList[0])
-  //   todosList.map((data) =>
-  //     window.localStorage.setItem(
-  //       data.category,
-  //       JSON.stringify([data.text, data.id])
-  //     )
-  //   );
-
-  console.log(todosList);
-
   return (
     <TodoListBox>
       <h1>Todo</h1>
@@ -74,9 +64,17 @@ function Todos() {
       </Forms>
       <hr />
       <CardList>
-        {/* {todosList.map((todokey) => (
-          <TodoCard key={todokey} category={todokey} />
-        ))} */}
+        {todosList[category].map((data) => {
+          return (
+            <TodoCard
+              key={data.id}
+              id={data.id}
+              text={data.text}
+              category={category}
+              categorys={todosKeys}
+            />
+          );
+        })}
       </CardList>
     </TodoListBox>
   );
