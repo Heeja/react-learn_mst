@@ -1,40 +1,55 @@
-import { useState } from "react";
-import { useRecoilState, useSetRecoilState } from "recoil";
-import { Categories, categoryState, RTodoList } from "../atoms";
+import React, { useState } from "react";
+import { useSetRecoilState } from "recoil";
+import styled from "styled-components";
+import { RTodoList } from "../atoms";
 
-function CreateTodo() {
+const FormBox = styled.form`
+  display: flex;
+  justify-content: center;
+
+  select {
+    width: 30%;
+    margin-right: 5px;
+  }
+
+  input {
+    margin-right: 5px;
+  }
+
+  button {
+    width: 20%;
+  }
+`;
+interface IProp {
+  category: string;
+}
+
+function CreateTodo({ category }: IProp) {
   const [todoName, setTodoName] = useState("");
-  const [category, setCategory] = useRecoilState(categoryState);
   const setTodoList = useSetRecoilState(RTodoList);
 
-  const onChangeTodo = (e: any) => {
+  const onChangeTodo = (e: React.ChangeEvent<HTMLInputElement>) => {
     setTodoName(e.target.value);
   };
 
-  const addTodo = (e: any) => {
+  const addTodo = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    setTodoList((oldList) => [
-      ...oldList,
-      { id: Date.now(), text: todoName, category: category },
-    ]);
+    setTodoList((allTodos) => {
+      const newTodo = {
+        id: Date.now(),
+        text: todoName,
+      };
+      return { ...allTodos, [category]: [...allTodos[category], newTodo] };
+    });
     setTodoName("");
-  };
-
-  const selectCategory = (e: React.FormEvent<HTMLSelectElement>) => {
-    setCategory(e.currentTarget.value as any);
   };
 
   return (
     <>
-      <form action="" onSubmit={addTodo}>
-        <select value={category} onInput={selectCategory}>
-          <option value={Categories.TO_DO}>To do</option>
-          <option value={Categories.DOING}>Doing</option>
-          <option value={Categories.DONE}>Done</option>
-        </select>
+      <FormBox onSubmit={addTodo}>
         <input type="text" value={todoName} onChange={onChangeTodo} />
         <button>Enter</button>
-      </form>
+      </FormBox>
     </>
   );
 }
