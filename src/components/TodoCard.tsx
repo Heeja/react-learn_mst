@@ -20,24 +20,27 @@ interface ICardProps {
 }
 
 function TodoCard({ id, text, category, categorys }: ICardProps) {
-  const categoryBtn = categorys.filter((data) => data != category);
+  const categoryBtn = categorys.filter((data) => data !== category);
 
-  const [todosList, setTodoList] = useRecoilState(RTodoList);
+  const setTodoList = useSetRecoilState(RTodoList);
 
   const onClick = (e: React.MouseEvent<HTMLButtonElement>) => {
     setTodoList((reTodos) => {
       const newCategorys = e.currentTarget.name;
-      console.log(newCategorys);
-      console.log(reTodos);
-      // const tgIndex = reTodos.findIndex((e) => e.id === id);
+      const beforeIndex = reTodos[category].findIndex((x) => x.id === id);
 
-      // const newTodos = [
-      //   ...reTodos.slice(0, tgIndex),
-      //   { text, id, category: newCategorys },
-      //   ...reTodos.slice(tgIndex + 1),
-      // ];
+      const mvTodos = { id: id, text: text };
 
-      return reTodos;
+      const newTodos = {
+        ...reTodos,
+        [category]: [
+          ...reTodos[category].slice(0, beforeIndex),
+          ...reTodos[category].slice(beforeIndex + 1),
+        ],
+        [newCategorys]: [...reTodos[newCategorys], mvTodos],
+      };
+
+      return newTodos;
     });
   };
 
