@@ -13,6 +13,8 @@ import CoinChart from "./Routes/crypto/CoinChart";
 
 import Todos from "./Routes/todos/Todos";
 
+import Trello from "./Routes/trello/Trello";
+
 import Noflix from "./Routes/flix/Noflix";
 import { RecoilRoot } from "recoil";
 
@@ -94,18 +96,26 @@ function App() {
       <QueryClientProvider client={queryClient}>
         <BrowserRouter>
           <Header />
-          <button onClick={toggleBtn}>{themeState ? "white" : "dark"}</button>
+          <button onClick={toggleBtn}>{themeState ? "light" : "dark"}</button>
           <GlobalStyle />
           <RecoilRoot>
             <Routes>
               <Route path="/" element={<Home />} />
 
               <Route path="/coins" element={<Coins />} />
-              <Route path="/:coinId/*" element={<Cointicker />}>
-                <Route path="chart" element={<CoinChart coinId={""} />} />
+              <Route
+                path="/:coinId/*"
+                element={<Cointicker themeState={themeState} />}
+              >
+                <Route
+                  path="chart"
+                  element={<CoinChart coinId={""} themeState={themeState} />}
+                />
               </Route>
 
               <Route path="/todos" element={<Todos />} />
+
+              <Route path="/trello" element={<Trello />} />
 
               <Route path="/noflix" element={<Noflix />} />
             </Routes>

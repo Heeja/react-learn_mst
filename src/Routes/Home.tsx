@@ -8,7 +8,7 @@ const HomeField = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  background-color: ${(props) => props.theme.cardBgColor};
+  background-color: ${(props) => props.theme.bgColor};
   color: ${(props) => props.theme.textColor};
 `;
 
@@ -49,7 +49,14 @@ function Home() {
           </Link>
         </LinkBox>
         <LinkBox>
-          <Link to={"/Todos"}>Todos</Link>
+          <Link to={"/Todos"}>
+            <NavLink>Todos</NavLink>
+          </Link>
+        </LinkBox>
+        <LinkBox>
+          <Link to={"/Trello"}>
+            <NavLink>Trello</NavLink>
+          </Link>
         </LinkBox>
         <LinkBox>
           <Link to={"/Noflix"}>

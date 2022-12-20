@@ -1,6 +1,6 @@
-import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
+import { useSetRecoilState } from "recoil";
 import styled from "styled-components";
-import { IToDo, RTodoList } from "../atoms";
+import { RTodoList } from "../atoms";
 
 const CardBox = styled.div`
   border: solid 0.5px;

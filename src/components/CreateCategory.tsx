@@ -19,12 +19,17 @@ function CreateCategory() {
 
   const onAddCategory = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-
     setTodoList((allTodos) => {
+      const keys = Object.keys(allTodos);
+      if (keys.find((categ) => categ === addCategory)) {
+        alert(`${addCategory}라는 카테고리는 이미 존재합니다.`);
+        return { ...allTodos };
+      }
       return { ...allTodos, [addCategory]: [] };
     });
     setAddCategory("");
   };
+
   return (
     <>
       <FormBox onSubmit={onAddCategory}>

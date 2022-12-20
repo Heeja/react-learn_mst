@@ -69,14 +69,7 @@ const GraphBox = styled.div`
   flex-direction: column;
   justify-content: space-around;
 
-  div {
-    display: flex;
-    justify-content: space-around;
-    margin: 5px 10px;
-    span {
-      width: 30%;
-      margin: 0px 4px;
-    }
+  
   }
 `;
 
@@ -88,7 +81,11 @@ const BtnLink = styled(Link)`
   text-align: center;
 `;
 
-function Cointicker() {
+interface tickerProps {
+  themeState: boolean;
+}
+
+function Cointicker({ themeState }: tickerProps) {
   const { coinId } = useParams();
 
   const { isLoading: tickersLoading, data: tickersData } = useQuery<CoinInfo>(
@@ -131,7 +128,10 @@ function Cointicker() {
 
           <GraphBox>
             <Routes>
-              <Route path={"chart"} element={<CoinChart coinId={coinId!} />} />
+              <Route
+                path={"chart"}
+                element={<CoinChart coinId={coinId!} themeState={themeState} />}
+              />
             </Routes>
           </GraphBox>
         </BigBox>

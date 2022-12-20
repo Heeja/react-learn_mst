@@ -1,98 +1,88 @@
-import React from "react";
 import { useQuery } from "@tanstack/react-query";
 import ApexCharts from "react-apexcharts";
+import styled from "styled-components";
 
 import { nomadTicker } from "../../api/cypto";
 import { IData } from "../../sharetype";
 
 interface ChartProps {
   coinId: string;
+  themeState: boolean;
 }
 
-function CoinChart({ coinId }: ChartProps) {
+const ChartBox = styled.div`
+  widht: 80%;
+  display: flex;
+  justify-content: center;
+`;
+
+function CoinChart({ coinId, themeState }: ChartProps) {
   const { isLoading, data } = useQuery<IData[]>(["coinTicker"], () =>
     nomadTicker(coinId)
   );
 
-  const seriesData = data?.map((sedata) => [
-    sedata.time_close,
-    [sedata.open, sedata.high, sedata.low, sedata.close],
-  ]);
-
-  //   const chartSrc = {
-  //     series: [
-  //       {
-  //         data: seriesData,
-  //       },
-  //     ],
-  //     options: {
-  //       chart: {
-  //         type: "candlestick",
-  //       },
-  //       title: {
-  //         text: "CandleStick Chart",
-  //         align: "left",
-  //       },
-  //       xaxis: {
-  //         type: "datetime",
-  //       },
-  //       yaxis: {
-  //         tooltip: {
-  //           enabled: true,
-  //         },
-  //       },
-  //     },
-  //   };
-
-  const haha:
-    | {
-        data: (Date | number[])[];
-      }[]
-    | unknown = data?.map((chartsrc) => {
-    return {
-      data: [
+  const chartData = !data
+    ? []
+    : data.map((chartsrc) => [
         chartsrc.time_close,
-        [
-          parseInt(chartsrc.open),
-          parseInt(chartsrc.high),
-          parseInt(chartsrc.low),
-          parseInt(chartsrc.close),
-        ],
-      ],
-    };
-  });
+        parseInt(chartsrc.open),
+        parseInt(chartsrc.high),
+        parseInt(chartsrc.low),
+        parseInt(chartsrc.close),
+      ]);
 
-  console.log(haha);
+  const chartSrc = {
+    series: [
+      {
+        data: chartData,
+      },
+    ],
+    options: {
+      title: {
+        text: `${coinId} Chart`,
+        align: "left",
+      },
+      xaxis: {
+        type: "datetime",
+      },
+      yaxis: {
+        show: true,
+      },
+      tooltip: {
+        enabled: true,
+      },
+    },
+  };
 
   return (
-    <>
+    <ChartBox>
       {isLoading ? (
         <h1>"Loading..."</h1>
       ) : (
-        // <ApexCharts
-        //   type="candlestick"
-        //   options={{
-        //     chart: {
-        //       type: "candlestick",
-        //     },
-        //     title: {
-        //       text: `${coinId} Chart`,
-        //       align: "left",
-        //     },
-        //     xaxis: {
-        //       type: "datetime",
-        //     },
-        //     yaxis: {
-        //       tooltip: {
-        //         enabled: true,
-        //       },
-        //     },
-        //   }}
-        //   series={haha}
-        // />
-        ""
+        <ApexCharts
+          type="candlestick"
+          options={{
+            title: {
+              text: `${coinId} Chart`,
+              align: "left",
+            },
+            theme: {
+              mode: themeState ? "dark" : "light",
+            },
+            xaxis: {
+              type: "datetime",
+            },
+            yaxis: {
+              show: true,
+            },
+            tooltip: {
+              enabled: true,
+            },
+          }}
+          series={chartSrc.series}
+        />
       )}
-    </>
+    </ChartBox>
   );
 }
 

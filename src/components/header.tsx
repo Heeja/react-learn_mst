@@ -21,9 +21,66 @@ function Header() {
             <h1>Home</h1>
           </NavLink>
         </Link>
-        {path.pathname === "/Coins" ? <></> : null}
-        {path.pathname === "/Todos" ? <></> : null}
-        {path.pathname === "/Noflix" ? <></> : null}
+        {path.pathname === "/Coins" ? (
+          <>
+            <Link to={"/Todos"}>
+              <NavLink>Todos</NavLink>
+            </Link>
+
+            <Link to={"/Trello"}>
+              <NavLink>Trello</NavLink>
+            </Link>
+
+            <Link to={"/Noflix"}>
+              <NavLink>Noflix</NavLink>
+            </Link>
+          </>
+        ) : null}
+        {path.pathname === "/Todos" ? (
+          <>
+            <Link to={"/Todos"}>
+              <NavLink>Todos</NavLink>
+            </Link>
+
+            <Link to={"/Trello"}>
+              <NavLink>Trello</NavLink>
+            </Link>
+
+            <Link to={"/Noflix"}>
+              <NavLink>Noflix</NavLink>
+            </Link>
+          </>
+        ) : null}
+        {path.pathname === "/Trello" ? (
+          <>
+            <Link to={"/Todos"}>
+              <NavLink>Todos</NavLink>
+            </Link>
+
+            <Link to={"/Trello"}>
+              <NavLink>Trello</NavLink>
+            </Link>
+
+            <Link to={"/Noflix"}>
+              <NavLink>Noflix</NavLink>
+            </Link>
+          </>
+        ) : null}
+        {path.pathname === "/Noflix" ? (
+          <>
+            <Link to={"/Noflix"}>
+              <NavLink>Movie</NavLink>
+            </Link>
+
+            <Link to={"/Noflix"}>
+              <NavLink>Series</NavLink>
+            </Link>
+
+            <Link to={"/Noflix"}>
+              <NavLink>Etc</NavLink>
+            </Link>
+          </>
+        ) : null}
       </Nav>
     </>
   );
