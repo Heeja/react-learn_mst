@@ -2,9 +2,9 @@ import React, { useState } from "react";
 import { useRecoilValue } from "recoil";
 import styled from "styled-components";
 import { RTodoList } from "../../atoms";
-import CreateCategory from "../../components/CreateCategory";
-import CreateTodo from "../../components/CreateTodo";
-import TodoCard from "../../components/TodoCard";
+import CreateCategory from "../../components/Todo/CreateCategory";
+import CreateTodo from "../../components/Todo/CreateTodo";
+import TodoCard from "../../components/Todo/TodoCard";
 
 const TodoListBox = styled.div`
   display: flex;

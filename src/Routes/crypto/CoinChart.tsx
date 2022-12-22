@@ -12,8 +12,6 @@ interface ChartProps {
 
 const ChartBox = styled.div`
   widht: 80%;
-  display: flex;
-  justify-content: center;
 `;
 
 function CoinChart({ coinId, themeState }: ChartProps) {

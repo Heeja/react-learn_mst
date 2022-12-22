@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import styled from "styled-components";
 import { useSetRecoilState } from "recoil";
-import { RTodoList } from "../atoms";
+import { RTodoList } from "../../atoms";
 
 const FormBox = styled.form`
   display: flex;
