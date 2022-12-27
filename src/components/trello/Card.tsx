@@ -1,15 +1,20 @@
 import { Draggable } from "react-beautiful-dnd";
 
 interface ICardProps {
+  index: number;
   id: number;
   cardName: string;
 }
-function Card({ id, cardName }: ICardProps) {
+function Card({ index, id, cardName }: ICardProps) {
   return (
-    <Draggable draggableId={cardName} index={id}>
+    <Draggable draggableId={cardName} index={index}>
       {(provided) => (
-        <div ref={provided.innerRef} {...provided.draggableProps}>
-          <p {...provided.dragHandleProps}>{cardName}</p>
+        <div
+          ref={provided.innerRef}
+          {...provided.draggableProps}
+          {...provided.dragHandleProps}
+        >
+          <p>{cardName}</p>
         </div>
       )}
     </Draggable>
