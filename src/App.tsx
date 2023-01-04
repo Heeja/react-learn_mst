@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { createGlobalStyle, ThemeProvider } from "styled-components";
+import { RecoilRoot } from "recoil";
 
 import Header from "./components/header";
 import { whiteTheme, darkTheme } from "./theme";
@@ -10,16 +11,17 @@ import Home from "./Routes/Home";
 import Coins from "./Routes/crypto/Coins";
 import Cointicker from "./Routes/crypto/Cointicker";
 import CoinChart from "./Routes/crypto/CoinChart";
+import CoinPrice from "./Routes/crypto/CoinPrice";
 
 import Todos from "./Routes/todos/Todos";
 
 import Trello from "./Routes/trello/Trello";
 
 import Noflix from "./Routes/flix/Noflix";
-import { RecoilRoot } from "recoil";
 
 const GlobalStyle = createGlobalStyle`
 @import url('https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@300;400&display=swap');
+
 html, body, div, span, applet, object, iframe,
 h1, h2, h3, h4, h5, h6, p, blockquote, pre,
 a, abbr, acronym, address, big, cite, code,
@@ -82,42 +84,43 @@ a {
   text-decoration:none;
   color:inherit;
 }
+svg {
+  color: ${(props) => props.theme.textColor};
+}
 `;
 
 function App() {
   const queryClient = new QueryClient();
-
   const [themeState, setTheme] = useState(false);
-
-  const toggleBtn = () => setTheme((btnTheme) => !btnTheme);
 
   return (
     <ThemeProvider theme={themeState ? darkTheme : whiteTheme}>
       <QueryClientProvider client={queryClient}>
         <BrowserRouter>
-          <Header />
-          <button onClick={toggleBtn}>{themeState ? "light" : "dark"}</button>
+          <Header themeState={themeState} setTheme={setTheme} />
+
           <GlobalStyle />
           <RecoilRoot>
             <Routes>
-              <Route path="/" element={<Home />} />
+              <Route path="/" element={<Home setTheme={setTheme} />} />
 
               <Route path="/coins" element={<Coins />} />
               <Route
-                path="/:coinId/*"
+                path="/coins/:coinId/*"
                 element={<Cointicker themeState={themeState} />}
               >
                 <Route
                   path="chart"
                   element={<CoinChart coinId={""} themeState={themeState} />}
                 />
+                <Route path="price" element={<CoinPrice coinId={""} />} />
               </Route>
 
               <Route path="/todos" element={<Todos />} />
 
-              <Route path="/trello" element={<Trello />} />
+              <Route path="/Trello" element={<Trello />} />
 
-              <Route path="/noflix" element={<Noflix />} />
+              <Route path="/Noflix" element={<Noflix />} />
             </Routes>
           </RecoilRoot>
         </BrowserRouter>

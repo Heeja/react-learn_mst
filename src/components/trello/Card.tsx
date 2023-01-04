@@ -7,7 +7,7 @@ interface ICardProps {
 }
 function Card({ index, id, cardName }: ICardProps) {
   return (
-    <Draggable draggableId={cardName} index={index}>
+    <Draggable draggableId={id.toString()} index={index}>
       {(provided) => (
         <div
           ref={provided.innerRef}

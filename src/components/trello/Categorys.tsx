@@ -9,7 +9,7 @@ const CategoryInBox = styled.div`
   width: 140px;
   height: 200px;
   border: solid 0.5px rgba(40, 40, 40, 1);
-  margin: 10px 0;
+  margin: 10px 10px;
 `;
 
 const FormBox = styled.form`
@@ -55,13 +55,16 @@ function Categorys({ category, id }: CardProps) {
     });
     reset();
   };
-  console.log(cardData);
 
   return (
     <Draggable draggableId={category} index={id}>
       {(provided) => (
-        <CategoryInBox ref={provided.innerRef} {...provided.draggableProps}>
-          <h2 {...provided.dragHandleProps}>{category}</h2>
+        <CategoryInBox
+          ref={provided.innerRef}
+          {...provided.draggableProps}
+          {...provided.dragHandleProps}
+        >
+          <h2>{category}</h2>
           <p>id: {id}</p>
           <FormBox onSubmit={handleSubmit(onSubmit)}>
             <input

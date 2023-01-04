@@ -1,4 +1,3 @@
-import React from "react";
 import { useQuery } from "@tanstack/react-query";
 import styled from "styled-components";
 
@@ -63,7 +62,7 @@ function Coins() {
         ) : (
           <>
             {data?.slice(0, 100).map((x) => (
-              <LinkBox key={x.id} to={`/${x.id}`}>
+              <LinkBox key={x.id} to={`/coins/${x.id}`}>
                 <Img
                   src={`https://coinicons-api.vercel.app/api/icon/${x.symbol.toLowerCase()}`}
                 />
@@ -78,4 +77,4 @@ function Coins() {
   );
 }
 
-export default React.memo(Coins);
+export default Coins;

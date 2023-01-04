@@ -6,6 +6,7 @@ import { CategoryList, NTodosList } from "../../atoms";
 import Categorys from "../../components/trello/Categorys";
 
 const CardBox = styled.div`
+  flex-wrap: wrap;
   justify-items: center;
   text-align: center;
   padding: 0 10px;
@@ -72,15 +73,10 @@ function Trello() {
         });
       }
       if (e.destination.droppableId !== e.source.droppableId) {
-        console.log(e);
         setTodoList((todos) => {
           const cpSrcTodos = [...todos[srcCategory]];
           const cpDesTodos = [...todos[desCategory]];
 
-          // const srcIndex = cpSrcTodos.findIndex((d) => d.id === e.source.index);
-          // const desIndex = cpDesTodos.findIndex(
-          //   (d) => d.id === e.destination.index
-          // );
           const mvTodos = cpSrcTodos[e.source.index];
 
           cpSrcTodos.splice(e.source.index, 1);
@@ -107,14 +103,14 @@ function Trello() {
       </form>
       <Droppable droppableId="category-filed" type="category">
         {(provided) => (
-          <CardBox ref={provided.innerRef} {...provided.droppableProps}>
-            {!categorys
-              ? ""
-              : categorys.map((data, index) => (
-                  <Categorys category={data} id={index} key={data} />
-                ))}
+          <div ref={provided.innerRef} {...provided.droppableProps}>
+            <CardBox>
+              {categorys.map((data, index) => (
+                <Categorys category={data} id={index} key={data} />
+              ))}
+            </CardBox>
             {provided.placeholder}
-          </CardBox>
+          </div>
         )}
       </Droppable>
     </DragDropContext>
