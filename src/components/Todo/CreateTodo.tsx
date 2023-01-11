@@ -33,6 +33,10 @@ function CreateTodo({ category }: IProp) {
   };
 
   const addTodo = (e: React.FormEvent<HTMLFormElement>) => {
+    if (!localStorage.getItem("todosList")) {
+      alert("카테고리를 먼저 추가해주세요.");
+      return;
+    }
     e.preventDefault();
     setTodoList((allTodos) => {
       const newTodo = {

@@ -36,7 +36,7 @@ const CardList = styled.div`
 `;
 
 function Todos() {
-  const [category, setCategory] = useState("to_do");
+  const [category, setCategory] = useState("");
   const todosList = useRecoilValue(RTodoList);
 
   const selectCategory = (e: React.MouseEvent<HTMLSelectElement>) => {
@@ -60,7 +60,7 @@ function Todos() {
           </select>
           <CreateTodo category={category} />
         </BoxAddTodo>
-        <CreateCategory />
+        <CreateCategory setCategory={setCategory} />
       </Forms>
       <hr />
       <CardList>
