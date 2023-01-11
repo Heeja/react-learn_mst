@@ -64,7 +64,7 @@ function Todos() {
       </Forms>
       <hr />
       <CardList>
-        {todosList[category].map((data) => {
+        {todosList[category]?.map((data) => {
           return (
             <TodoCard
               key={data.id}

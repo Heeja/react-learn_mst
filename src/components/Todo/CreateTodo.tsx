@@ -39,7 +39,12 @@ function CreateTodo({ category }: IProp) {
         id: Date.now(),
         text: todoName,
       };
-      return { ...allTodos, [category]: [...allTodos[category], newTodo] };
+      const newData = {
+        ...allTodos,
+        [category]: [...allTodos[category], newTodo],
+      };
+
+      return newData;
     });
     setTodoName("");
   };

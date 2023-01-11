@@ -35,13 +35,12 @@ const SearchInput = styled(motion.input)`
 
 const HeadlineCard = styled.div`
   width: 100vw;
-  height: auto;
+
   position: relative;
 `;
 
 const HeadlineImg = styled.img`
   width: 100vw;
-  height: auto;
 `;
 const HeadlineInfoBox = styled.div`
   width: 60%;
@@ -61,10 +60,12 @@ const HeadlineInfoBox = styled.div`
 const CardBigBox = styled.div`
   width: 100%;
   display: flex;
+  align-items: center;
   position: relative;
 
   span {
-    background-color: rgba(0, 0, 0, 0.2);
+    width: 4%;
+
     position: absolute;
   }
 
@@ -76,7 +77,6 @@ const CardBigBox = styled.div`
   }
 
   svg {
-    height: 120px;
     display: none;
   }
 
@@ -87,18 +87,31 @@ const CardBigBox = styled.div`
   }
 `;
 
-const SlideBox = styled(motion.div)`
+const Slider = styled.div`
+  position: relative;
+  display: flex;
+
+  span {
+    width: 4%;
+    display: flex;
+    align-items: center;
+    svg {
+      width: 100%;
+    }
+  }
+`;
+
+const SlideRow = styled(motion.div)`
   display: grid;
-  grid-template-columns: repeat(8, 1fr);
   gap: 10px;
+  grid-template-columns: repeat(6, 1fr);
   width: 100%;
 `;
 
 const SlideCard = styled(motion.div)`
   background-color: white;
-  height: 120px;
-  img {
-  }
+  height: 140px;
+  color: red;
 `;
 
 const rowVariants = {
@@ -116,6 +129,7 @@ const rowVariants = {
 function Noflix() {
   const [btnState, setBtnState] = useState(true);
   const [index, setIndex] = useState(0);
+  const [ready, setReady] = useState(false);
 
   const onClick = (e: React.MouseEvent<HTMLButtonElement>) => {
     setBtnState(!btnState);
@@ -123,11 +137,18 @@ function Noflix() {
 
   const onBack = (e: React.MouseEvent<HTMLButtonElement>) => {
     if (index === 0) return;
+    if (ready) return;
+    toggleExit();
     setIndex((prev) => prev - 1);
   };
   const onNext = (e: React.MouseEvent<HTMLButtonElement>) => {
+    if (ready) return;
+    toggleExit();
     setIndex((prev) => prev + 1);
   };
+
+  const toggleExit = () => setReady((prev) => !prev);
+
   return (
     <>
       <FlixHeader>
@@ -173,32 +194,32 @@ function Noflix() {
         </HeadlineInfoBox>
       </HeadlineCard>
 
-      <CardBigBox>
-        <AnimatePresence>
-          <span onClick={onBack}>
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 512">
-              <path d="M9.4 278.6c-12.5-12.5-12.5-32.8 0-45.3l128-128c9.2-9.2 22.9-11.9 34.9-6.9s19.8 16.6 19.8 29.6l0 256c0 12.9-7.8 24.6-19.8 29.6s-25.7 2.2-34.9-6.9l-128-128z" />
-            </svg>
-          </span>
-          <SlideBox
+      <Slider>
+        <span onClick={onBack}>
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 512">
+            <path d="M9.4 278.6c-12.5-12.5-12.5-32.8 0-45.3l128-128c9.2-9.2 22.9-11.9 34.9-6.9s19.8 16.6 19.8 29.6l0 256c0 12.9-7.8 24.6-19.8 29.6s-25.7 2.2-34.9-6.9l-128-128z" />
+          </svg>
+        </span>
+        <AnimatePresence onExitComplete={toggleExit}>
+          <SlideRow
             variants={rowVariants}
             initial="hidden"
             animate="visible"
             exit="exit"
-            transition={{ type: "tween", duration: 1 }}
+            transition={{ type: "tween", duration: 1.5 }}
             key={index}
           >
-            {Array.from(Array(8).keys()).map((e, index) => {
+            {Array.from(Array(6).keys()).map((e, index) => {
               return <SlideCard key={index}>{e}</SlideCard>;
             })}
-          </SlideBox>
-          <span onClick={onNext}>
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 512">
-              <path d="M246.6 278.6c12.5-12.5 12.5-32.8 0-45.3l-128-128c-9.2-9.2-22.9-11.9-34.9-6.9s-19.8 16.6-19.8 29.6l0 256c0 12.9 7.8 24.6 19.8 29.6s25.7 2.2 34.9-6.9l128-128z" />
-            </svg>
-          </span>
+          </SlideRow>
         </AnimatePresence>
-      </CardBigBox>
+        <span onClick={onNext}>
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 512">
+            <path d="M246.6 278.6c12.5-12.5 12.5-32.8 0-45.3l-128-128c-9.2-9.2-22.9-11.9-34.9-6.9s-19.8 16.6-19.8 29.6l0 256c0 12.9 7.8 24.6 19.8 29.6s25.7 2.2 34.9-6.9l128-128z" />
+          </svg>
+        </span>
+      </Slider>
     </>
   );
 }
