@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { Dispatch, SetStateAction, useState } from "react";
 import styled from "styled-components";
 import { useSetRecoilState } from "recoil";
 import { RTodoList } from "../../atoms";
@@ -9,7 +9,11 @@ const FormBox = styled.form`
   margin-top: 10px;
 `;
 
-function CreateCategory() {
+interface IProp {
+  setCategory: Dispatch<SetStateAction<string>>;
+}
+
+function CreateCategory({ setCategory }: IProp) {
   const [addCategory, setAddCategory] = useState("");
   const setTodoList = useSetRecoilState(RTodoList);
 
@@ -26,7 +30,7 @@ function CreateCategory() {
         alert(`${addCategory}라는 카테고리는 이미 존재합니다.`);
         return { ...allTodos };
       }
-
+      setCategory(addCategory);
       return { ...allTodos, [addCategory]: [] };
     });
     setAddCategory("");
