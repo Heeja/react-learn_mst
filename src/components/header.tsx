@@ -77,6 +77,10 @@ function Header({ themeState, setTheme }: IHeadeer) {
             <Link to={"/Noflix"} onClick={noflixBtn}>
               <NavLink>Noflix</NavLink>
             </Link>
+
+            <Link to={"/Motion"}>
+              <NavLink>Motion</NavLink>
+            </Link>
           </Nav>
           <button onClick={toggleBtn}>{themeState ? "light" : "dark"}</button>
         </>

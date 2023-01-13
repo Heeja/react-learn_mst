@@ -45,6 +45,22 @@ const LinkPreImg = styled.img`
   height: 80%;
 `;
 
+const MotionDiv = styled.div`
+  background-color: hsl(259, 100%, 71%);
+  width: 100%;
+  height: 100%;
+  border-radius: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  h1 {
+    font-size: 2.4rem;
+    font-family: Luminari;
+    color: snow;
+  }
+`;
+
 interface IHome {
   setTheme: React.Dispatch<React.SetStateAction<boolean>>;
 }
@@ -78,6 +94,14 @@ function Home({ setTheme }: IHome) {
           <Link to={"/Noflix"} onClick={noflixBtn}>
             <NavLink>Noflix</NavLink>
             <LinkPreImg src={require("../img/noflix.jpeg")} />
+          </Link>
+        </LinkBox>
+        <LinkBox>
+          <Link to={"/Motion"}>
+            <NavLink>MotionPage</NavLink>
+            <MotionDiv>
+              <h1>Framer-Motion</h1>
+            </MotionDiv>
           </Link>
         </LinkBox>
       </NavBox>

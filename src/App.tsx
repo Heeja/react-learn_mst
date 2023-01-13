@@ -18,6 +18,7 @@ import Todos from "./Routes/todos/Todos";
 import Trello from "./Routes/trello/Trello";
 
 import Noflix from "./Routes/flix/Noflix";
+import Motion from "./Routes/Motion";
 
 const GlobalStyle = createGlobalStyle`
 @import url('https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@300;400&display=swap');
@@ -121,6 +122,8 @@ function App() {
               <Route path="/Trello" element={<Trello />} />
 
               <Route path="/Noflix" element={<Noflix />} />
+
+              <Route path="/Motion" element={<Motion />} />
             </Routes>
           </RecoilRoot>
         </BrowserRouter>
