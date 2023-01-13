@@ -1,135 +1,105 @@
-import React, { useState } from "react";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { createGlobalStyle, ThemeProvider } from "styled-components";
-import { RecoilRoot } from "recoil";
+import { AnimatePresence, motion } from "framer-motion";
+import { useState } from "react";
+import styled from "styled-components";
 
-import Header from "./components/header";
-import { whiteTheme, darkTheme } from "./theme";
+const BackgroundDiv = styled.div`
+  width: 100vw;
+  height: 100vh;
+  background: linear-gradient(135deg, #e09, #d0e);
 
-import Home from "./Routes/Home";
-import Coins from "./Routes/crypto/Coins";
-import Cointicker from "./Routes/crypto/Cointicker";
-import CoinChart from "./Routes/crypto/CoinChart";
-import CoinPrice from "./Routes/crypto/CoinPrice";
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+`;
 
-import Todos from "./Routes/todos/Todos";
+const FatherDiv = styled(motion.div)`
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  grid-template-rows: repeat(2, 1fr);
+  grid-column-gap: 10px;
+  grid-row-gap: 10px;
+  justify-items: center;
+  align-items: center;
 
-import Trello from "./Routes/trello/Trello";
+  width: 100%;
+  height: 80%;
+`;
 
-import Noflix from "./Routes/flix/Noflix";
-import Motion from "./Routes/Motion";
+const ChildDiv = styled(motion.div)`
+  background-color: rgba(0, 0, 0, 0.3);
+  width: 80%;
+  height: 80%;
 
-const GlobalStyle = createGlobalStyle`
-@import url('https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@300;400&display=swap');
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
 
-html, body, div, span, applet, object, iframe,
-h1, h2, h3, h4, h5, h6, p, blockquote, pre,
-a, abbr, acronym, address, big, cite, code,
-del, dfn, em, img, ins, kbd, q, s, samp,
-small, strike, strong, sub, sup, tt, var,
-b, u, i, center,
-dl, dt, dd, menu, ol, ul, li,
-fieldset, form, label, legend,
-table, caption, tbody, tfoot, thead, tr, th, td,
-article, aside, canvas, details, embed,
-figure, figcaption, footer, header, hgroup,
-main, menu, nav, output, ruby, section, summary,
-time, mark, audio, video {
-  margin: 0;
-  padding: 0;
-  border: 0;
-  font-size: 100%;
-  font: inherit;
-  vertical-align: baseline;
-}
-/* HTML5 display-role reset for older browsers */
-article, aside, details, figcaption, figure,
-footer, header, hgroup, main, menu, nav, section {
-  display: block;
-}
-/* HTML5 hidden-attribute fix for newer browsers */
-*[hidden] {
-    display: none;
-}
-body {
-  line-height: 1;
-}
-menu, ol, ul {
-  list-style: none;
-}
-blockquote, q {
-  quotes: none;
-}
-blockquote:before, blockquote:after,
-q:before, q:after {
-  content: '';
-  content: none;
-}
-table {
-  border-collapse: collapse;
-  border-spacing: 0;
-}
-* {
-  box-sizing: border-box;
-}
-body {
-  font-weight: 300;
-  font-family: 'Source Sans Pro', sans-serif;
-  line-height: 1.2;
-  background-color:${(props) => props.theme.bgColor};
-  color:${(props) => props.theme.textColor};
-  border-color: ${(props) => props.theme.textColor};
-}
-a {
-  text-decoration:none;
-  color:inherit;
-}
-svg {
-  color: ${(props) => props.theme.textColor};
-}
+const CircleDiv = styled(motion.div)`
+  width: 60px;
+  height: 60px;
+  border-radius: 100%;
+  background-color: snow;
+`;
+
+const SwitchBtn = styled(motion.button)`
+  width: 120px;
+  height: 40px;
+  border-radius: 10px;
+  background-color: snow;
+  border: none;
+`;
+
+const OverRay = styled(motion.div)`
+  width: 100vw;
+  height: 100vh;
+  position: absolute;
+  top: 0;
+  left: 0;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
 `;
 
 function App() {
-  const queryClient = new QueryClient();
-  const [themeState, setTheme] = useState(false);
+  const [circleState, setCirclState] = useState(false);
+  const [id, setId] = useState<string | null>("");
+
+  const switchClick = () => {
+    setCirclState((prev) => !prev);
+  };
 
   return (
-    <ThemeProvider theme={themeState ? darkTheme : whiteTheme}>
-      <QueryClientProvider client={queryClient}>
-        <BrowserRouter>
-          <Header themeState={themeState} setTheme={setTheme} />
-
-          <GlobalStyle />
-          <RecoilRoot>
-            <Routes>
-              <Route path="/" element={<Home setTheme={setTheme} />} />
-
-              <Route path="/coins" element={<Coins />} />
-              <Route
-                path="/coins/:coinId/*"
-                element={<Cointicker themeState={themeState} />}
-              >
-                <Route
-                  path="chart"
-                  element={<CoinChart coinId={""} themeState={themeState} />}
-                />
-                <Route path="price" element={<CoinPrice coinId={""} />} />
-              </Route>
-
-              <Route path="/todos" element={<Todos />} />
-
-              <Route path="/Trello" element={<Trello />} />
-
-              <Route path="/Noflix" element={<Noflix />} />
-
-              <Route path="/Motion" element={<Motion />} />
-            </Routes>
-          </RecoilRoot>
-        </BrowserRouter>
-      </QueryClientProvider>
-    </ThemeProvider>
+    <>
+      <BackgroundDiv>
+        <FatherDiv>
+          <ChildDiv layoutId={"firstBox"} onClick={() => setId("firstBox")} />
+          <ChildDiv>
+            {circleState ? "" : <CircleDiv layoutId="circle" />}
+          </ChildDiv>
+          <ChildDiv>
+            {circleState ? <CircleDiv layoutId="circle" /> : ""}
+          </ChildDiv>
+          <ChildDiv layoutId={"secondBox"} onClick={() => setId("secondBox")} />
+        </FatherDiv>
+        <SwitchBtn onClick={switchClick}>Switch</SwitchBtn>
+      </BackgroundDiv>
+      <AnimatePresence>
+        {id ? (
+          <OverRay
+            onClick={() => setId(null)}
+            initial={{ backgroundColor: "rgba(0,0,0,0)" }}
+            animate={{ backgroundColor: "rgba(0,0,0,0.5)" }}
+            exit={{ backgroundColor: "rgba(0,0,0,0)" }}
+          >
+            <ChildDiv layoutId={id}></ChildDiv>
+          </OverRay>
+        ) : null}
+      </AnimatePresence>
+    </>
   );
 }
 
-export default React.memo(App);
+export default App;
