@@ -19,6 +19,9 @@ import Trello from "./Routes/trello/Trello";
 
 import Noflix from "./Routes/flix/Noflix";
 import Motion from "./Routes/Motion";
+import Tv from "./components/noflix/tv";
+import Movie from "./components/noflix/movie";
+import Search from "./components/noflix/search";
 
 const GlobalStyle = createGlobalStyle`
 @import url('https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@300;400&display=swap');
@@ -121,7 +124,14 @@ function App() {
 
               <Route path="/Trello" element={<Trello />} />
 
-              <Route path="/Noflix" element={<Noflix />} />
+              <Route
+                path="/Noflix"
+                element={<Noflix themeState={themeState} setTheme={setTheme} />}
+              >
+                <Route path="tv" element={<Tv />} />
+                <Route path="movie" element={<Movie />} />
+                <Route path="search" element={<Search />} />
+              </Route>
 
               <Route path="/Motion" element={<Motion />} />
             </Routes>

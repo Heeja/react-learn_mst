@@ -1,225 +1,202 @@
-import React, { useState } from "react";
+import React from "react";
 import styled from "styled-components";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion } from "framer-motion";
+import { Outlet, useLocation } from "react-router-dom";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faAngleRight } from "@fortawesome/free-solid-svg-icons";
 
-const FlixHeader = styled.div`
-  height: 38px;
+// Top Main
+const HomeBox = styled.div`
+  width: 100%;
+  height: 600px;
+`;
+
+const MainImg = styled.img`
+  width: 100%;
+  filter: brightness(45%);
+`;
+
+const MainTitle = styled.h1`
+  font-family: "Padyakke Expanded One", cursive;
+  font-size: 72px;
+  position: absolute;
+  top: 280px;
+  left: 40px;
+`;
+
+const MainSubText = styled.p`
+  font-family: "Montserrat", sans-serif;
+  font-size: 18px;
+  width: 50%;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+  position: absolute;
+  top: 380px;
+  left: 40px;
+`;
+
+const ListBox = styled.div`
+  display: flex;
+  position: relative;
+`;
+
+const SmallBox = styled.span`
+  position: relative;
+`;
+
+const SmallArrowBox = styled.div`
+  position: absolute;
+  width: 24px;
+  height: 125px;
+  right: 0px;
   display: flex;
   justify-content: center;
   align-items: center;
-  position: absolute;
-  right: 30px;
-  top: 0px;
-  border: none;
-`;
-const UserIcon = styled.div`
-  display: flex;
-  align-items: center;
-  img {
-    width: 32px;
-    height: 32px;
-  }
 `;
 
-const SearchBtn = styled(motion.button)`
-  border: none;
-  background-color: transparent;
-  padding: 0 0;
-  margin-right: 4px;
+const SmallTextBox = styled.p`
+  position: absolute;
+  top: 4px;
+  left: 4px;
 `;
+
+const SmallImgBox = styled.img`
+  width: 220px;
+  height: 120px;
+`;
+
+// Movie Top list
+
+// Tv Top List
+
+// rate Top List
 
 const SearchInput = styled(motion.input)`
-  border: none;
-  height: 60%;
-`;
-
-const HeadlineCard = styled.div`
-  width: 100vw;
-
-  position: relative;
-`;
-
-const HeadlineImg = styled.img`
-  width: 100vw;
-`;
-const HeadlineInfoBox = styled.div`
-  width: 60%;
+  height: 20px;
   position: absolute;
-  top: 40%;
-  left: 6%;
-  color: white;
+  left: -120px;
 
-  h1 {
-    font-size: 200%;
-  }
-  p {
-    font-size: 80%;
-  }
+  transform-origin: right center;
 `;
+interface INoflix {
+  themeState: boolean;
+  setTheme: React.Dispatch<React.SetStateAction<boolean>>;
+}
 
-const CardBigBox = styled.div`
-  width: 100%;
-  display: flex;
-  align-items: center;
-  position: relative;
-
-  span {
-    width: 4%;
-
-    position: absolute;
-  }
-
-  span:first-child {
-    left: 0px;
-  }
-  span:last-child {
-    right: 0px;
-  }
-
-  svg {
-    display: none;
-  }
-
-  :hover {
-    svg {
-      display: block;
-    }
-  }
-`;
-
-const Slider = styled.div`
-  position: relative;
-  display: flex;
-
-  span {
-    width: 4%;
-    display: flex;
-    align-items: center;
-    svg {
-      width: 100%;
-    }
-  }
-`;
-
-const SlideRow = styled(motion.div)`
-  display: grid;
-  gap: 10px;
-  grid-template-columns: repeat(6, 1fr);
-  width: 100%;
-`;
-
-const SlideCard = styled(motion.div)`
-  background-color: white;
-  height: 140px;
-  color: red;
-`;
-
-const rowVariants = {
-  hidden: {
-    x: window.outerWidth + 10,
-  },
-  visible: {
-    x: 0,
-  },
-  exit: {
-    x: -window.outerWidth - 10,
-  },
-};
-
-function Noflix() {
-  const [btnState, setBtnState] = useState(true);
-  const [index, setIndex] = useState(0);
-  const [ready, setReady] = useState(false);
-
-  const onClick = (e: React.MouseEvent<HTMLButtonElement>) => {
-    setBtnState(!btnState);
-  };
-
-  const onBack = (e: React.MouseEvent<HTMLButtonElement>) => {
-    if (index === 0) return;
-    if (ready) return;
-    toggleExit();
-    setIndex((prev) => prev - 1);
-  };
-  const onNext = (e: React.MouseEvent<HTMLButtonElement>) => {
-    if (ready) return;
-    toggleExit();
-    setIndex((prev) => prev + 1);
-  };
-
-  const toggleExit = () => setReady((prev) => !prev);
+function Noflix({ themeState, setTheme }: INoflix) {
+  if (!themeState) setTheme(true);
+  const path = useLocation();
+  const pathName = path.pathname;
 
   return (
     <>
-      <FlixHeader>
-        <SearchBtn onClick={onClick}>
-          <svg
-            width="24"
-            height="24"
-            viewBox="0 0 20 20"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <path
-              fillRule="evenodd"
-              clipRule="evenodd"
-              d="M14 11C14 14.3137 11.3137 17 8 17C4.68629 17 2 14.3137 2 11C2 7.68629 4.68629 5 8 5C11.3137 5 14 7.68629 14 11ZM14.3623 15.8506C12.9006 17.7649 10.5945 19 8 19C3.58172 19 0 15.4183 0 11C0 6.58172 3.58172 3 8 3C12.4183 3 16 6.58172 16 11C16 12.1076 15.7749 13.1626 15.368 14.1218L24.0022 19.1352L22.9979 20.8648L14.3623 15.8506Z"
-              fill="currentColor"
-            ></path>
-          </svg>
-        </SearchBtn>
-        <SearchInput
-          animate={
-            btnState
-              ? { scaleX: 0, display: "none" }
-              : { scaleX: 1, display: "block" }
-          }
-          placeholder="search name..."
-        />
-        <UserIcon>
-          <img alt="profile" src={require("../../img/noflix_profile.png")} />
-        </UserIcon>
-      </FlixHeader>
+      <link rel="preconnect" href="https://fonts.googleapis.com" />
+      <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="" />
+      <link
+        href="https://fonts.googleapis.com/css2?family=Montserrat:wght@200&family=Padyakke+Expanded+One&display=swap"
+        rel="stylesheet"
+      />
 
-      <HeadlineCard>
-        <HeadlineImg src={require("../../img/mainPoster.jpeg")} alt="" />
-        <HeadlineInfoBox>
-          <h1>Witcher: Blood Origin</h1>
-          <p>
-            《위쳐》의 세계가 펼쳐지기 1,000여 년 전. 무소불위의 권력을 가진
-            제국에 맞서고자 뭉친 엘프 세계의 추방자 일곱 명이 험난한 원정길에
-            오른다.
-          </p>
-          <div>Top Card Action Btn</div>
-        </HeadlineInfoBox>
-      </HeadlineCard>
-
-      <Slider>
-        <span onClick={onBack}>
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 512">
-            <path d="M9.4 278.6c-12.5-12.5-12.5-32.8 0-45.3l128-128c9.2-9.2 22.9-11.9 34.9-6.9s19.8 16.6 19.8 29.6l0 256c0 12.9-7.8 24.6-19.8 29.6s-25.7 2.2-34.9-6.9l-128-128z" />
-          </svg>
-        </span>
-        <AnimatePresence onExitComplete={toggleExit}>
-          <SlideRow
-            variants={rowVariants}
-            initial="hidden"
-            animate="visible"
-            exit="exit"
-            transition={{ type: "tween", duration: 1.5 }}
-            key={index}
-          >
-            {Array.from(Array(6).keys()).map((e, index) => {
-              return <SlideCard key={index}>{e}</SlideCard>;
+      {pathName === "/Noflix" ? (
+        <HomeBox>
+          <div>
+            <MainImg
+              src={require("../../img/noflix/aHFgoGZ2VQNY45nJWGcBvszaMXz.jpg")}
+              alt="dune-2021"
+            />
+            <MainTitle>Dune - 2021</MainTitle>
+            <MainSubText>
+              Paul Atreides, <br />a brilliant and gifted young man born into a
+              great destiny beyond his understanding, must travel to the most
+              dangerous planet in the universe to ensure the future of his
+              family and his people. <br />
+              As malevolent forces explode into conflict over the planet's
+              exclusive supply of the most precious resource in existence-a
+              commodity capable of unlocking humanity's greatest potential-only
+              <br />
+              those who can conquer their fear will survive.
+            </MainSubText>
+          </div>
+          <br />
+          <h2>새로 올라온 콘텐츠</h2>
+          <ListBox>
+            {[1, 2, 3, 4, 5, 6, 7, 8].map((e) => {
+              return (
+                <SmallBox key={e}>
+                  <SmallImgBox />
+                  <SmallTextBox>{e}</SmallTextBox>
+                </SmallBox>
+              );
             })}
-          </SlideRow>
-        </AnimatePresence>
-        <span onClick={onNext}>
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 512">
-            <path d="M246.6 278.6c12.5-12.5 12.5-32.8 0-45.3l-128-128c-9.2-9.2-22.9-11.9-34.9-6.9s-19.8 16.6-19.8 29.6l0 256c0 12.9 7.8 24.6 19.8 29.6s25.7 2.2 34.9-6.9l128-128z" />
-          </svg>
-        </span>
-      </Slider>
+            <SmallArrowBox>
+              <FontAwesomeIcon icon={faAngleRight} size="xl" />
+            </SmallArrowBox>
+          </ListBox>
+          <br />
+          <h2>영화 Top 10</h2>
+          <ListBox>
+            {[1, 2, 3, 4, 5, 6, 7, 8].map((e) => {
+              return (
+                <SmallBox key={e}>
+                  <SmallImgBox />
+                  <SmallTextBox>{e}</SmallTextBox>
+                </SmallBox>
+              );
+            })}
+            <SmallArrowBox>
+              <FontAwesomeIcon icon={faAngleRight} size="xl" />
+            </SmallArrowBox>
+          </ListBox>
+          <br />
+          <h2>Tv, 드라마 Top 10</h2>
+          <ListBox>
+            {[1, 2, 3, 4, 5, 6, 7, 8].map((e) => {
+              return (
+                <SmallBox key={e}>
+                  <SmallImgBox />
+                  <SmallTextBox>{e}</SmallTextBox>
+                </SmallBox>
+              );
+            })}
+            <SmallArrowBox>
+              <FontAwesomeIcon icon={faAngleRight} size="xl" />
+            </SmallArrowBox>
+          </ListBox>
+          <br />
+          <h2>"[] []"장르 추천</h2>
+          <ListBox>
+            {[1, 2, 3, 4, 5, 6, 7, 8].map((e) => {
+              return (
+                <SmallBox key={e}>
+                  <SmallImgBox />
+                  <SmallTextBox>{e}</SmallTextBox>
+                </SmallBox>
+              );
+            })}
+            <SmallArrowBox>
+              <FontAwesomeIcon icon={faAngleRight} size="xl" />
+            </SmallArrowBox>
+          </ListBox>
+          <br />
+          <h2>기타 콘텐츠</h2>
+          <ListBox>
+            {[1, 2, 3, 4, 5, 6, 7, 8].map((e) => {
+              return (
+                <SmallBox key={e}>
+                  <SmallImgBox />
+                  <SmallTextBox>{e}</SmallTextBox>
+                </SmallBox>
+              );
+            })}
+            <SmallArrowBox>
+              <FontAwesomeIcon icon={faAngleRight} size="xl" />
+            </SmallArrowBox>
+          </ListBox>
+        </HomeBox>
+      ) : (
+        <Outlet />
+      )}
     </>
   );
 }
