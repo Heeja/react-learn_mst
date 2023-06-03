@@ -1,9 +1,19 @@
-import React from "react";
+import React, { Dispatch, SetStateAction, useEffect, useState } from "react";
 import styled from "styled-components";
-import { motion } from "framer-motion";
+import { AnimatePresence, motion } from "framer-motion";
 import { Outlet, useLocation } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faAngleRight } from "@fortawesome/free-solid-svg-icons";
+import { faAngleLeft, faAngleRight } from "@fortawesome/free-solid-svg-icons";
+
+// api
+import { getMainMovie, getNowPlaying, trendingMovie } from "../../api/moviedb";
+
+// CSS
+
+// 반응형 처리 참고
+// @media screen and (min-width: 1500px)
+// @media screen and (max-width: 800px)
+// @media screen and (min-width: 800px) and (max-width: 1099px)
 
 // Top Main
 const HomeBox = styled.div`
@@ -28,9 +38,9 @@ const MainSubText = styled.p`
   font-family: "Montserrat", sans-serif;
   font-size: 18px;
   width: 50%;
-  text-overflow: ellipsis;
-  overflow: hidden;
-  white-space: nowrap;
+  // text-overflow: ellipsis;
+  // overflow: hidden;
+  white-space: normal;
   position: absolute;
   top: 380px;
   left: 40px;
@@ -39,31 +49,54 @@ const MainSubText = styled.p`
 const ListBox = styled.div`
   display: flex;
   position: relative;
+  padding: 0 60px;
 `;
 
-const SmallBox = styled.span`
+const SmallBox = styled(motion.div)`
   position: relative;
+  padding: 0 0.2vw;
 `;
 
-const SmallArrowBox = styled.div`
-  position: absolute;
-  width: 24px;
-  height: 125px;
-  right: 0px;
+const SmallArrowBox = styled.span`
+role="button"
+  background: hsla(0, 0%, 8%, 0.7);
+  border-bottom-left-radius: 4px;
+  border-top-left-radius: 4px;
+
   display: flex;
   justify-content: center;
   align-items: center;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 60px;
+
+  font-size: 3vw;
+
+  .active {
+    cursor: pointer;
+  }
+
+  .svg {
+    font-weight: 500;
+  }
 `;
 
 const SmallTextBox = styled.p`
+  height: 100%;
+  background-color: #222;
+  background-image: linear-gradient(transparent, #000);
+  border-radius: 4px;
   position: absolute;
-  top: 4px;
-  left: 4px;
+  top: 0px;
+  left: 0px;
+  color: snow;
+  z-index: -1;
 `;
 
 const SmallImgBox = styled.img`
-  width: 220px;
-  height: 120px;
+  width: 100%;
+  height: 100%;
 `;
 
 // Movie Top list
@@ -79,64 +112,190 @@ const SearchInput = styled(motion.input)`
 
   transform-origin: right center;
 `;
+
+// typescript Interface
 interface INoflix {
   themeState: boolean;
-  setTheme: React.Dispatch<React.SetStateAction<boolean>>;
+  setTheme: Dispatch<SetStateAction<boolean>>;
 }
+
+interface IMainMovie {
+  backdrop_path: string;
+  genres: Object;
+  id: number;
+  overview: string;
+  original_title: string;
+  title: string;
+  poster_path: string;
+  release_date: string;
+  status: string;
+  vote_average: number;
+  vote_count: number;
+}
+
+interface IPlayNow {
+  original_title: string;
+  id: number;
+  overview: string;
+  release_date: string;
+  title: string;
+  adult: boolean;
+  backdrop_path: string;
+  poster_path: string;
+}
+
+const offset = 6;
 
 function Noflix({ themeState, setTheme }: INoflix) {
   if (!themeState) setTheme(true);
   const path = useLocation();
   const pathName = path.pathname;
 
+  const [loading, setLoading] = useState(true);
+
+  // Contents Data
+  const [mainMovie, setMainMovie] = useState<IMainMovie>({
+    backdrop_path: "",
+    genres: {},
+    id: 0,
+    overview: "",
+    original_title: "",
+    title: "",
+    poster_path: "",
+    release_date: "",
+    status: "",
+    vote_average: 0,
+    vote_count: 0,
+  });
+  // <{[key: string]: any}>({})
+  const [playNowData, setPlayNow] = useState<IPlayNow[]>([]);
+
+  const IMAGE_URL = "https://image.tmdb.org/t/p/original";
+
+  const movieNowList = async () => {
+    const mainMoveData = await getMainMovie();
+    const moviesData = await getNowPlaying();
+    const movieTrend = await trendingMovie();
+    // console.log(moviesData.results);
+
+    setMainMovie(mainMoveData);
+    setPlayNow(moviesData.results);
+    setLoading(false);
+  };
+
+  useEffect(() => {
+    movieNowList();
+  }, []);
+
+  // function
+  const [index, setIndex] = useState(0);
+  const [leaving, setLeaving] = useState(false);
+
+  const increaseIndex = () => {
+    if (playNowData) {
+      // if (leaving) return;
+      // toggleLeaving();
+      const totalMovies = playNowData.length - 1;
+      const maxIndex = Math.floor(totalMovies / offset) - 1;
+
+      setIndex((prev) => (prev === maxIndex ? 0 : prev + 1));
+    }
+  };
+
+  const toggleLeaving = () => setLeaving((prev) => !prev);
+
   return (
     <>
-      <link rel="preconnect" href="https://fonts.googleapis.com" />
-      <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="" />
-      <link
-        href="https://fonts.googleapis.com/css2?family=Montserrat:wght@200&family=Padyakke+Expanded+One&display=swap"
-        rel="stylesheet"
-      />
-
-      {pathName === "/Noflix" ? (
+      {loading ? (
+        <MainTitle>"Loading......."</MainTitle>
+      ) : pathName === "/Noflix" ? (
         <HomeBox>
+          <link rel="preconnect" href="https://fonts.googleapis.com" />
+          <link
+            rel="preconnect"
+            href="https://fonts.gstatic.com"
+            crossOrigin=""
+          />
+          <link
+            href="https://fonts.googleapis.com/css2?family=Montserrat:wght@200&family=Padyakke+Expanded+One&display=swap"
+            rel="stylesheet"
+          />
+
           <div>
             <MainImg
               src={require("../../img/noflix/aHFgoGZ2VQNY45nJWGcBvszaMXz.jpg")}
               alt="dune-2021"
             />
-            <MainTitle>Dune - 2021</MainTitle>
-            <MainSubText>
-              Paul Atreides, <br />a brilliant and gifted young man born into a
-              great destiny beyond his understanding, must travel to the most
-              dangerous planet in the universe to ensure the future of his
-              family and his people. <br />
-              As malevolent forces explode into conflict over the planet's
-              exclusive supply of the most precious resource in existence-a
-              commodity capable of unlocking humanity's greatest potential-only
-              <br />
-              those who can conquer their fear will survive.
-            </MainSubText>
+            <MainTitle>
+              {mainMovie.original_title} -{mainMovie.release_date.slice(0, 4)}
+            </MainTitle>
+            <MainSubText>{mainMovie.overview}</MainSubText>
           </div>
           <br />
-          <h2>새로 올라온 콘텐츠</h2>
+          <h2>Play Now!!!</h2>
+          {/* 슬라이드 형식 from nomad.
+          <Slider>
+            <AnimatePresence initial={false} onExitComplete={toggleLeaving}>
+              <Row
+                variants={rowVariants}
+                initial="hidden"
+                animate="visible"
+                exit="exit"
+                transition={{ type: "tween", duration: 1 }}
+                key={index}
+              >
+                {data?.results
+                  .slice(1)
+                  .slice(offset * index, offset * index + offset)
+                  .map((movie) => (
+                    <Box
+                      key={movie.id}
+                      whileHover="hover"
+                      initial="normal"
+                      variants={boxVariants}
+                      transition={{ type: "tween" }}
+                      bgPhoto={makeImagePath(movie.backdrop_path, "w500")}
+                    >
+                      <Info variants={infoVariants}>
+                        <h4>{movie.title}</h4>
+                      </Info>
+                    </Box>
+                  ))}
+              </Row>
+            </AnimatePresence>
+          </Slider>
+           */}
           <ListBox>
-            {[1, 2, 3, 4, 5, 6, 7, 8].map((e) => {
-              return (
-                <SmallBox key={e}>
-                  <SmallImgBox />
-                  <SmallTextBox>{e}</SmallTextBox>
-                </SmallBox>
-              );
-            })}
-            <SmallArrowBox>
-              <FontAwesomeIcon icon={faAngleRight} size="xl" />
-            </SmallArrowBox>
+            {index === 0 ? null : (
+              <SmallArrowBox style={{ left: 0 }} onClick={increaseIndex}>
+                <FontAwesomeIcon icon={faAngleLeft} size="xl" />
+              </SmallArrowBox>
+            )}
+            <AnimatePresence>
+              {playNowData
+                .slice(offset * index, offset * index + offset)
+                .map((e) => {
+                  return (
+                    <SmallBox
+                      key={e.id}
+                      initial={{ x: 300, opacity: 0 }}
+                      animate={{ x: 0, opacity: 1 }}
+                      exit={{ x: -300, opacity: 0 }}
+                    >
+                      <SmallImgBox src={`${IMAGE_URL}${e.poster_path}`} />
+                      <SmallTextBox>{e.title}</SmallTextBox>
+                    </SmallBox>
+                  );
+                })}
+              <SmallArrowBox style={{ right: 0 }} onClick={increaseIndex}>
+                <FontAwesomeIcon icon={faAngleRight} size="xl" />
+              </SmallArrowBox>
+            </AnimatePresence>
           </ListBox>
           <br />
           <h2>영화 Top 10</h2>
           <ListBox>
-            {[1, 2, 3, 4, 5, 6, 7, 8].map((e) => {
+            {Array.from({ length: 20 }, (_, idx) => idx + 1).map((e) => {
               return (
                 <SmallBox key={e}>
                   <SmallImgBox />
@@ -151,7 +310,7 @@ function Noflix({ themeState, setTheme }: INoflix) {
           <br />
           <h2>Tv, 드라마 Top 10</h2>
           <ListBox>
-            {[1, 2, 3, 4, 5, 6, 7, 8].map((e) => {
+            {Array.from({ length: 20 }, (_, idx) => idx + 1).map((e) => {
               return (
                 <SmallBox key={e}>
                   <SmallImgBox />
@@ -166,7 +325,7 @@ function Noflix({ themeState, setTheme }: INoflix) {
           <br />
           <h2>"[] []"장르 추천</h2>
           <ListBox>
-            {[1, 2, 3, 4, 5, 6, 7, 8].map((e) => {
+            {Array.from({ length: 20 }, (_, idx) => idx + 1).map((e) => {
               return (
                 <SmallBox key={e}>
                   <SmallImgBox />
@@ -181,7 +340,7 @@ function Noflix({ themeState, setTheme }: INoflix) {
           <br />
           <h2>기타 콘텐츠</h2>
           <ListBox>
-            {[1, 2, 3, 4, 5, 6, 7, 8].map((e) => {
+            {Array.from({ length: 20 }, (_, idx) => idx + 1).map((e) => {
               return (
                 <SmallBox key={e}>
                   <SmallImgBox />
