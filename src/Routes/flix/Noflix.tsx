@@ -6,7 +6,12 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faAngleLeft, faAngleRight } from "@fortawesome/free-solid-svg-icons";
 
 // api
-import { getMainMovie, getNowPlaying, trendingMovie } from "../../api/moviedb";
+import {
+  getMainMovie,
+  getNowPlaying,
+  trendingMovie,
+  makeImagePath,
+} from "../../api/moviedb";
 
 // CSS
 
@@ -45,23 +50,35 @@ const MainSubText = styled.p`
   top: 380px;
   left: 40px;
 `;
-
-const ListBox = styled.div`
-  display: flex;
+const Slider = styled.div`
   position: relative;
+  height: 100px;
+`;
+
+const ListBox = styled(motion.div)`
+  width: 100%;
+  display: grid;
+  gap: 10px;
+  grid-template-columns: repeat(6, 1fr);
+  margin-bottom: 10px;
+  position: absolute;
   padding: 0 60px;
 `;
 
-const SmallBox = styled(motion.div)`
-  position: relative;
+const SmallBox = styled(motion.div)<{ bgImage: string }>`
   padding: 0 0.2vw;
   transition: all 0.3s ease-in-out;
-  width: 16.66666667%;
+  background-color: white;
+  background-image: url(${(props) => props.bgImage});
+  background-size: cover;
+  background-position: center center;
+  height: 100px;
+  font-size: 66px;
 `;
 
 const SmallArrowBox = styled.span`
   role="button";
-  background: hsla(0, 0%, 8%, 0.7);
+  background: hsla(0, 0%, 8%, 0.3);
   border-bottom-left-radius: 4px;
   border-top-left-radius: 4px;
 
@@ -69,9 +86,8 @@ const SmallArrowBox = styled.span`
   justify-content: center;
   align-items: center;
   position: absolute;
-  top: 0;
-  bottom: 0;
   width: 60px;
+  height: 100px;
 
   font-size: 3vw;
 
@@ -85,11 +101,10 @@ const SmallArrowBox = styled.span`
 `;
 
 const SmallTextBox = styled.div`
-  width: 16.666667%;
-  height: 100%;
   position: absolute;
-  background-color: rgb(34, 34, 34);
-  background-image: linear-gradient(transparent, rgb(0, 0, 0));
+  background-size: cover;
+  background-position: center center;
+  height: 200px;
   border-radius: 4px;
   color: snow;
 
@@ -99,11 +114,6 @@ const SmallTextBox = styled.div`
     background-color: #222;
     background-image: linear-gradient(transparent, #000);
   }
-`;
-
-const SmallImgBox = styled.img`
-  width: 100%;
-  height: 100%;
 `;
 
 // Movie Top list
@@ -153,6 +163,34 @@ interface IPlayNow {
 
 const offset = 6;
 
+// animation
+const rowVariants = {
+  hidden: {
+    x: window.outerWidth + 5,
+  },
+  visible: {
+    x: 0,
+  },
+  exit: {
+    x: -window.outerWidth - 5,
+  },
+};
+
+const boxVariants = {
+  normal: {
+    scale: 1,
+  },
+  hover: {
+    scale: 1.3,
+    y: -50,
+    transition: {
+      delay: 0.3,
+      duaration: 0.5,
+      type: "tween",
+    },
+  },
+};
+
 function Noflix({ themeState, setTheme }: INoflix) {
   if (!themeState) setTheme(true);
   const path = useLocation();
@@ -183,7 +221,7 @@ function Noflix({ themeState, setTheme }: INoflix) {
     const mainMoveData = await getMainMovie();
     const moviesData = await getNowPlaying();
     const movieTrend = await trendingMovie();
-    // console.log(moviesData.results);
+    console.log(moviesData);
 
     setMainMovie(mainMoveData);
     setPlayNow(moviesData.results);
@@ -240,127 +278,66 @@ function Noflix({ themeState, setTheme }: INoflix) {
           </div>
           <br />
           <h2>Play Now!!!</h2>
-          {/* 슬라이드 형식 from nomad.
           <Slider>
             <AnimatePresence initial={false} onExitComplete={toggleLeaving}>
-              <Row
+              {index === 0 ? null : (
+                <SmallArrowBox style={{ left: 0 }} onClick={increaseIndex}>
+                  <FontAwesomeIcon icon={faAngleLeft} size="xl" />
+                </SmallArrowBox>
+              )}
+              <ListBox
+                key={index}
                 variants={rowVariants}
                 initial="hidden"
                 animate="visible"
                 exit="exit"
                 transition={{ type: "tween", duration: 1 }}
-                key={index}
               >
-                {data?.results
-                  .slice(1)
+                {playNowData
                   .slice(offset * index, offset * index + offset)
-                  .map((movie) => (
-                    <Box
-                      key={movie.id}
-                      whileHover="hover"
-                      initial="normal"
-                      variants={boxVariants}
-                      transition={{ type: "tween" }}
-                      bgPhoto={makeImagePath(movie.backdrop_path, "w500")}
-                    >
-                      <Info variants={infoVariants}>
-                        <h4>{movie.title}</h4>
-                      </Info>
-                    </Box>
-                  ))}
-              </Row>
-            </AnimatePresence>
-          </Slider>
-           */}
-          <ListBox>
-            {index === 0 ? null : (
-              <SmallArrowBox style={{ left: 0 }} onClick={increaseIndex}>
-                <FontAwesomeIcon icon={faAngleLeft} size="xl" />
-              </SmallArrowBox>
-            )}
-            <AnimatePresence>
-              {playNowData
-                .slice(offset * index, offset * index + offset)
-                .map((e) => {
-                  return (
-                    <SmallBox
-                      key={e.id}
-                      initial={{ x: 300, opacity: 0 }}
-                      animate={{ x: 0, opacity: 1 }}
-                      exit={{ x: -300, opacity: 0 }}
-                    >
-                      <div style={{ height: "100%" }}>
-                        {/* <SmallImgBox src={`${IMAGE_URL}${e.poster_path}`} /> */}
-                      </div>
-                      <SmallTextBox>{/* <p>{e.title}</p> */}</SmallTextBox>
-                    </SmallBox>
-                  );
-                })}
+                  .map((e) => {
+                    return (
+                      <SmallBox
+                        key={e.id}
+                        variants={boxVariants}
+                        whileHover="hover"
+                        initial="normal"
+                        transition={{ type: "tween" }}
+                        bgImage={makeImagePath(e.backdrop_path, "w500")}
+                      ></SmallBox>
+                    );
+                  })}
+              </ListBox>
               <SmallArrowBox style={{ right: 0 }} onClick={increaseIndex}>
                 <FontAwesomeIcon icon={faAngleRight} size="xl" />
               </SmallArrowBox>
             </AnimatePresence>
-          </ListBox>
+          </Slider>
           <br />
+
           <h2>영화 Top 10</h2>
-          <ListBox>
-            {Array.from({ length: 20 }, (_, idx) => idx + 1).map((e) => {
-              return (
-                <SmallBox key={e}>
-                  <SmallImgBox />
-                  <SmallTextBox>{e}</SmallTextBox>
-                </SmallBox>
-              );
-            })}
-            <SmallArrowBox>
-              <FontAwesomeIcon icon={faAngleRight} size="xl" />
-            </SmallArrowBox>
-          </ListBox>
+          <Slider>
+            <ListBox></ListBox>
+          </Slider>
           <br />
+
           <h2>Tv, 드라마 Top 10</h2>
-          <ListBox>
-            {Array.from({ length: 20 }, (_, idx) => idx + 1).map((e) => {
-              return (
-                <SmallBox key={e}>
-                  <SmallImgBox />
-                  <SmallTextBox>{e}</SmallTextBox>
-                </SmallBox>
-              );
-            })}
-            <SmallArrowBox>
-              <FontAwesomeIcon icon={faAngleRight} size="xl" />
-            </SmallArrowBox>
-          </ListBox>
+          <Slider>
+            <ListBox></ListBox>
+          </Slider>
           <br />
+
           <h2>"[] []"장르 추천</h2>
-          <ListBox>
-            {Array.from({ length: 20 }, (_, idx) => idx + 1).map((e) => {
-              return (
-                <SmallBox key={e}>
-                  <SmallImgBox />
-                  <SmallTextBox>{e}</SmallTextBox>
-                </SmallBox>
-              );
-            })}
-            <SmallArrowBox>
-              <FontAwesomeIcon icon={faAngleRight} size="xl" />
-            </SmallArrowBox>
-          </ListBox>
+          <Slider>
+            <ListBox></ListBox>
+          </Slider>
           <br />
+
           <h2>기타 콘텐츠</h2>
-          <ListBox>
-            {Array.from({ length: 20 }, (_, idx) => idx + 1).map((e) => {
-              return (
-                <SmallBox key={e}>
-                  <SmallImgBox />
-                  <SmallTextBox>{e}</SmallTextBox>
-                </SmallBox>
-              );
-            })}
-            <SmallArrowBox>
-              <FontAwesomeIcon icon={faAngleRight} size="xl" />
-            </SmallArrowBox>
-          </ListBox>
+          <Slider>
+            <ListBox></ListBox>
+          </Slider>
+          <br />
         </HomeBox>
       ) : (
         <Outlet />
