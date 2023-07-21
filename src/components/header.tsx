@@ -1,10 +1,20 @@
-import { Link, useLocation } from "react-router-dom";
+import { motion } from "framer-motion";
+import { useState } from "react";
+import { Link, useLocation, useMatch } from "react-router-dom";
 import styled from "styled-components";
 
 interface IHeadeer {
   themeState: boolean;
   setTheme: React.Dispatch<React.SetStateAction<boolean>>;
+  searchText: string;
+  setSearchText: React.Dispatch<React.SetStateAction<string>>;
 }
+
+const HeaderBox = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+`;
 
 const Nav = styled.div`
   display: flex;
@@ -18,43 +28,146 @@ const Nav = styled.div`
 `;
 
 const NavLink = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position; relative;
   margin: 5px 10px;
 `;
 
-function Header({ themeState, setTheme }: IHeadeer) {
+const CircleNFL = styled(motion.span)`
+  width: 5px;
+  height: 5px;
+  position: absolute;
+  background-color: red;
+  border-radius: 100%;
+  top: 26px;
+  left: auto;
+  right: auto;
+  margin: 0 auto;
+`;
+
+const RightBox = styled.div`
+  display: flex;
+  align-items: center;
+  position: relative;
+`;
+
+const SeachBox = styled.div`
+  display: flex;
+  align-items: center;
+`;
+
+const UserIcon = styled(motion.span)`
+  width: 38px;
+  height: 38px;
+  text-align: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  svg {
+    height: 24px;
+  }
+`;
+
+const SearchIcon = styled.i`
+  tion: absolute;
+  align-items: center;
+  font-size: 22px;
+`;
+
+const SearchInput = styled(motion.input)`
+  height: 20px;
+  position: absolute;
+  left: -120px;
+
+  transform-origin: right center;
+`;
+const ProfileImg = styled.img`
+  border-radius: 4px;
+`;
+
+function Header({ themeState, setTheme, searchText, setSearchText }: IHeadeer) {
   const path = useLocation();
+  const homeMatch = useMatch("/noflix");
+  const tvMatch = useMatch("noflix/tv");
+  const movieMatch = useMatch("noflix/movie");
+
+  const [searchOpen, setOpen] = useState(false);
+  const onSearchClick = () => setOpen((prev) => !prev);
 
   const toggleBtn = () => setTheme((btnTheme) => !btnTheme);
   const noflixBtn = () => setTheme(true);
 
+  const onSearchInput = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const searchValue = e.target.value;
+    setSearchText(searchValue);
+  };
+
   return (
     <>
-      {path.pathname === "/Noflix" ? (
-        <>
+      {path.pathname.match("Noflix") ? (
+        <HeaderBox>
           <Nav>
             <img
               height={32}
               alt="Netflix icon"
               src="https://upload.wikimedia.org/wikipedia/commons/thumb/7/75/Netflix_icon.svg/256px-Netflix_icon.svg.png"
             />
-            <Link to={"/"}>
+            <Link to={"/Noflix"}>
               <NavLink>
-                <h1>Home</h1>
+                Home{" "}
+                {homeMatch && (
+                  <CircleNFL layoutId="circle" animate={{ type: "spring" }} />
+                )}
               </NavLink>
             </Link>
-            <Link to={"/Noflix"}>
-              <NavLink>Movie</NavLink>
+            <Link to={"Noflix/tv"}>
+              <NavLink>
+                Tv/Series{" "}
+                {tvMatch && (
+                  <CircleNFL layoutId="circle" animate={{ type: "spring" }} />
+                )}
+              </NavLink>
             </Link>
-
-            <Link to={"/Noflix"}>
-              <NavLink>Series</NavLink>
-            </Link>
-
-            <Link to={"/Noflix"}>
-              <NavLink>Etc</NavLink>
+            <Link to={"Noflix/movie"}>
+              <NavLink>
+                Movie{" "}
+                {movieMatch && (
+                  <CircleNFL layoutId="circle" animate={{ type: "spring" }} />
+                )}
+              </NavLink>
             </Link>
           </Nav>
-        </>
+
+          <RightBox>
+            <SeachBox>
+              <UserIcon
+                onClick={onSearchClick}
+                animate={{ x: searchOpen ? -155 : 0 }}
+                // transition={{ type: "linear" }}
+                // 업데이트로 transition 관련 문구 오류가 발생함. 아래 링크 참고..!
+                // https://github.com/framer/motion/issues/1847
+              >
+                <SearchIcon className="fa-solid fa-magnifying-glass"></SearchIcon>
+              </UserIcon>
+              <SearchInput
+                type="text"
+                placeholder="Search keyword..."
+                animate={{ scaleX: searchOpen ? 1 : 0, type: "spring" }}
+                // transition={{ type: "linear" }}
+                value={searchText}
+                onChange={onSearchInput}
+              />
+            </SeachBox>
+            <UserIcon>
+              <ProfileImg
+                src={require("../img/noflix_profile.png")}
+              ></ProfileImg>
+            </UserIcon>
+          </RightBox>
+        </HeaderBox>
       ) : (
         <>
           <Nav>
