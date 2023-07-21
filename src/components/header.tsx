@@ -6,6 +6,8 @@ import styled from "styled-components";
 interface IHeadeer {
   themeState: boolean;
   setTheme: React.Dispatch<React.SetStateAction<boolean>>;
+  searchText: string;
+  setSearchText: React.Dispatch<React.SetStateAction<string>>;
 }
 
 const HeaderBox = styled.div`
@@ -86,7 +88,7 @@ const ProfileImg = styled.img`
   border-radius: 4px;
 `;
 
-function Header({ themeState, setTheme }: IHeadeer) {
+function Header({ themeState, setTheme, searchText, setSearchText }: IHeadeer) {
   const path = useLocation();
   const homeMatch = useMatch("/noflix");
   const tvMatch = useMatch("noflix/tv");
@@ -97,6 +99,11 @@ function Header({ themeState, setTheme }: IHeadeer) {
 
   const toggleBtn = () => setTheme((btnTheme) => !btnTheme);
   const noflixBtn = () => setTheme(true);
+
+  const onSearchInput = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const searchValue = e.target.value;
+    setSearchText(searchValue);
+  };
 
   return (
     <>
@@ -150,6 +157,8 @@ function Header({ themeState, setTheme }: IHeadeer) {
                 placeholder="Search keyword..."
                 animate={{ scaleX: searchOpen ? 1 : 0, type: "spring" }}
                 // transition={{ type: "linear" }}
+                value={searchText}
+                onChange={onSearchInput}
               />
             </SeachBox>
             <UserIcon>

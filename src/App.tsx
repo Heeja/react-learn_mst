@@ -26,6 +26,78 @@ import Search from "./components/noflix/search";
 const GlobalStyle = createGlobalStyle`
 @import url('https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@300;400&display=swap');
 
+@media screen and (min-width: 0) and(max-width: 480px) and(max-aspect-ratio: 4/3) {
+  body, html {
+      font-size:1.5vw
+  }
+}
+
+@media screen and (min-width: 481px) and(max-width: 840px) and(max-aspect-ratio: 4/3) {
+  body, html {
+      font-size:1vw
+  }
+}
+
+@media screen and (min-width: 841px) and(max-width: 1280px) and(max-aspect-ratio: 4/3) {
+  body, html {
+      font-size:.75vw
+  }
+}
+
+@media screen and (min-width: 1281px) and(max-width: 1600px) and(max-aspect-ratio: 4/3) {
+  body, html {
+      font-size:.75vw
+  }
+}
+
+@media screen and (min-width: 1601px) and(max-width: 1920px) and(max-aspect-ratio: 4/3) {
+  body, html {
+      font-size:.75vw
+  }
+}
+
+@media screen and (min-width: 1921px) and(max-aspect-ratio: 4/3) {
+  body, html {
+      font-size:12px
+  }
+}
+
+@media screen and (max-width: 480px) and(orientation: landscape) {
+  body, html {
+      font-size:1.5vw
+  }
+}
+
+@media screen and (min-width: 481px) and(max-width: 840px) and(orientation: landscape) {
+  body, html {
+      font-size:1.2vw
+  }
+}
+
+@media screen and (min-width: 841px) and(max-width: 1280px) and(orientation: landscape) {
+  body, html {
+      font-size:.85vw
+  }
+}
+
+@media screen and (min-width: 1281px) and(max-width: 1600px) and(orientation: landscape) {
+  body, html {
+      font-size:.75vw
+  }
+}
+
+@media screen and (min-width: 1601px) and(max-width: 1920px) and(orientation: landscape) {
+  body, html {
+      font-size:.75vw
+  }
+}
+
+@media screen and (min-width: 1921px) and(orientation: landscape) {
+  body, html {
+      font-size:14px
+  }
+}
+
 html, body, div, span, applet, object, iframe,
 h1, h2, h3, h4, h5, h6, p, blockquote, pre,
 a, abbr, acronym, address, big, cite, code,
@@ -46,6 +118,7 @@ time, mark, audio, video {
   font: inherit;
   vertical-align: baseline;
 }
+
 /* HTML5 display-role reset for older browsers */
 article, aside, details, figcaption, figure,
 footer, header, hgroup, main, menu, nav, section {
@@ -96,12 +169,18 @@ svg {
 function App() {
   const queryClient = new QueryClient();
   const [themeState, setTheme] = useState(false);
+  const [searchText, setSearchText] = useState("");
 
   return (
     <ThemeProvider theme={themeState ? darkTheme : whiteTheme}>
       <QueryClientProvider client={queryClient}>
         <BrowserRouter>
-          <Header themeState={themeState} setTheme={setTheme} />
+          <Header
+            themeState={themeState}
+            setTheme={setTheme}
+            searchText={searchText}
+            setSearchText={setSearchText}
+          />
 
           <GlobalStyle />
           <RecoilRoot>

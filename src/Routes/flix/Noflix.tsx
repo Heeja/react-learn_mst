@@ -55,10 +55,12 @@ const ListBox = styled.div`
 const SmallBox = styled(motion.div)`
   position: relative;
   padding: 0 0.2vw;
+  transition: all 0.3s ease-in-out;
+  width: 16.66666667%;
 `;
 
 const SmallArrowBox = styled.span`
-role="button"
+  role="button";
   background: hsla(0, 0%, 8%, 0.7);
   border-bottom-left-radius: 4px;
   border-top-left-radius: 4px;
@@ -82,16 +84,21 @@ role="button"
   }
 `;
 
-const SmallTextBox = styled.p`
+const SmallTextBox = styled.div`
+  width: 16.666667%;
   height: 100%;
-  background-color: #222;
-  background-image: linear-gradient(transparent, #000);
-  border-radius: 4px;
   position: absolute;
-  top: 0px;
-  left: 0px;
+  background-color: rgb(34, 34, 34);
+  background-image: linear-gradient(transparent, rgb(0, 0, 0));
+  border-radius: 4px;
   color: snow;
-  z-index: -1;
+
+  p {
+    font-size: 1.2em;
+    height: 100%;
+    background-color: #222;
+    background-image: linear-gradient(transparent, #000);
+  }
 `;
 
 const SmallImgBox = styled.img`
@@ -282,8 +289,10 @@ function Noflix({ themeState, setTheme }: INoflix) {
                       animate={{ x: 0, opacity: 1 }}
                       exit={{ x: -300, opacity: 0 }}
                     >
-                      <SmallImgBox src={`${IMAGE_URL}${e.poster_path}`} />
-                      <SmallTextBox>{e.title}</SmallTextBox>
+                      <div style={{ height: "100%" }}>
+                        {/* <SmallImgBox src={`${IMAGE_URL}${e.poster_path}`} /> */}
+                      </div>
+                      <SmallTextBox>{/* <p>{e.title}</p> */}</SmallTextBox>
                     </SmallBox>
                   );
                 })}
