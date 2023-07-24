@@ -1,12 +1,11 @@
 {
   "files": {
-    "main.js": "/react-learn_mst/static/js/main.4a982c06.js",
-    "static/media/aHFgoGZ2VQNY45nJWGcBvszaMXz.jpg": "/react-learn_mst/static/media/aHFgoGZ2VQNY45nJWGcBvszaMXz.4caca334f4f26c223a57.jpg",
+    "main.js": "/react-learn_mst/static/js/main.2e607365.js",
     "static/media/coins.jpeg": "/react-learn_mst/static/media/coins.35dcc57ca474ba54a78b.jpeg",
     "index.html": "/react-learn_mst/index.html",
-    "main.4a982c06.js.map": "/react-learn_mst/static/js/main.4a982c06.js.map"
+    "main.2e607365.js.map": "/react-learn_mst/static/js/main.2e607365.js.map"
   },
   "entrypoints": [
-    "static/js/main.4a982c06.js"
+    "static/js/main.2e607365.js"
   ]
 }
