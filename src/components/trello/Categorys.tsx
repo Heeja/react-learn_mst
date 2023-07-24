@@ -8,11 +8,31 @@ import Card from "./Card";
 const CategoryInBox = styled.div`
   width: 140px;
   height: 200px;
-  border: solid 0.5px rgba(40, 40, 40, 1);
+  border: solid 0.5px rgba(40, 40, 40, 0.3);
+  border-radius: 6px;
   margin: 10px 10px;
+  background-color: rgba(0, 0, 0, 0.1);
+`;
+
+const InfoBox = styled.div`
+  margin: 6px 0;
+
+  div:first-child {
+    font-size: 1.2rem;
+    font-weight: 500;
+    color: #3c2a6f;
+    margin-top: 2px;
+  }
+  div:last-child {
+    font-size: 0.9rem;
+    font-weight: 300;
+    color: #878a8d;
+    margin-bottom: 4px;
+  }
 `;
 
 const FormBox = styled.form`
+  margin: 6px 2px;
   input {
     width: 100px;
   }
@@ -64,8 +84,10 @@ function Categorys({ category, id }: CardProps) {
           {...provided.draggableProps}
           {...provided.dragHandleProps}
         >
-          <h2>{category}</h2>
-          <p>id: {id}</p>
+          <InfoBox>
+            <div>{category}</div>
+            <div>(id: {id})</div>
+          </InfoBox>
           <FormBox onSubmit={handleSubmit(onSubmit)}>
             <input
               type="text"

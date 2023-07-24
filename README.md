@@ -39,4 +39,3 @@ React JS Master Class in Nomadcoders
 
 1. Crypto Page: UPBit API
 2. Noflix Page: themoviedb API
-   API Key 노출로 업데이트 X
