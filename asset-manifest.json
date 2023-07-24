@@ -1,12 +1,12 @@
 {
   "files": {
-    "main.js": "/react-learn_mst/static/js/main.c888c73b.js",
-    "static/media/mainPoster.jpeg": "/react-learn_mst/static/media/mainPoster.8f480ed9ad463f9023fb.jpeg",
+    "main.js": "/react-learn_mst/static/js/main.c6c712ef.js",
+    "static/media/aHFgoGZ2VQNY45nJWGcBvszaMXz.jpg": "/react-learn_mst/static/media/aHFgoGZ2VQNY45nJWGcBvszaMXz.4caca334f4f26c223a57.jpg",
     "static/media/coins.jpeg": "/react-learn_mst/static/media/coins.35dcc57ca474ba54a78b.jpeg",
     "index.html": "/react-learn_mst/index.html",
-    "main.c888c73b.js.map": "/react-learn_mst/static/js/main.c888c73b.js.map"
+    "main.c6c712ef.js.map": "/react-learn_mst/static/js/main.c6c712ef.js.map"
   },
   "entrypoints": [
-    "static/js/main.c888c73b.js"
+    "static/js/main.c6c712ef.js"
   ]
 }
