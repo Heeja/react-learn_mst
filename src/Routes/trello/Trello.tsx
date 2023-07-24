@@ -5,9 +5,15 @@ import styled from "styled-components";
 import { CategoryList, NTodosList } from "../../atoms";
 import Categorys from "../../components/trello/Categorys";
 
+const FormBox = styled.div`
+  text-align: center;
+  margin: 10px 30px;
+`;
+
 const CardBox = styled.div`
+  display: flex;
   flex-wrap: wrap;
-  justify-items: center;
+  justify-content: center;
   text-align: center;
   padding: 0 10px;
 `;
@@ -94,13 +100,16 @@ function Trello() {
 
   return (
     <DragDropContext onDragEnd={onDragEnd}>
-      <form onSubmit={handleSubmit(onSubmit)}>
-        <input
-          type="text"
-          placeholder="add Category"
-          {...register("addCategory")}
-        />
-      </form>
+      <FormBox>
+        <form onSubmit={handleSubmit(onSubmit)}>
+          <input
+            type="text"
+            placeholder="add Category"
+            {...register("addCategory")}
+          />
+        </form>
+      </FormBox>
+
       <Droppable droppableId="category-filed" type="category">
         {(provided) => (
           <div ref={provided.innerRef} {...provided.droppableProps}>

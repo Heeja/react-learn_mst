@@ -1,7 +1,7 @@
 import { motion } from "framer-motion";
 import { useState } from "react";
 import { Link, useLocation, useMatch } from "react-router-dom";
-import styled from "styled-components";
+import styled, { keyframes } from "styled-components";
 
 interface IHeadeer {
   themeState: boolean;
@@ -9,6 +9,41 @@ interface IHeadeer {
   searchText: string;
   setSearchText: React.Dispatch<React.SetStateAction<string>>;
 }
+
+// animation
+
+const jelloVertical = keyframes`
+0% {
+  -webkit-transform: scale3d(1, 1, 1);
+          transform: scale3d(1, 1, 1);
+}
+30% {
+  -webkit-transform: scale3d(0.75, 1.25, 1);
+          transform: scale3d(0.75, 1.25, 1);
+}
+40% {
+  -webkit-transform: scale3d(1.25, 0.75, 1);
+          transform: scale3d(1.25, 0.75, 1);
+}
+50% {
+  -webkit-transform: scale3d(0.85, 1.15, 1);
+          transform: scale3d(0.85, 1.15, 1);
+}
+65% {
+  -webkit-transform: scale3d(1.05, 0.95, 1);
+          transform: scale3d(1.05, 0.95, 1);
+}
+75% {
+  -webkit-transform: scale3d(0.95, 1.05, 1);
+          transform: scale3d(0.95, 1.05, 1);
+}
+100% {
+  -webkit-transform: scale3d(1, 1, 1);
+          transform: scale3d(1, 1, 1);
+}
+`;
+
+// Styled Tag
 
 const HeaderBox = styled.div`
   display: flex;
@@ -21,6 +56,8 @@ const Nav = styled.div`
   justify-content: flex-start;
   height: 38px;
   align-items: center;
+  color: black;
+  font-weight: 400;
 
   img {
     margin: 3px 3px;
@@ -33,6 +70,14 @@ const NavLink = styled.div`
   align-items: center;
   position; relative;
   margin: 5px 10px;
+  padding: 2px 6px;
+  background-color: rgba(187, 151, 255, 0.4);
+  border: solid 0.2px rgba(0,0,0,0.2);
+  border-radius: 6px;
+
+  :hover {
+    animation: ${jelloVertical} 0.9s both;
+  }
 `;
 
 const CircleNFL = styled(motion.span)`
@@ -86,6 +131,21 @@ const SearchInput = styled(motion.input)`
 `;
 const ProfileImg = styled.img`
   border-radius: 4px;
+`;
+
+const WhiteDarkBtn = styled.button`
+  width: 60px;
+  height: 20px;
+  margin: 6px 10px;
+  border: none;
+  outline: none;
+  border-radius: 10px;
+  background-color: #4b2ba8;
+  color: snow;
+
+  :hover {
+    animation: ${jelloVertical} 0.9s both;
+  }
 `;
 
 function Header({ themeState, setTheme, searchText, setSearchText }: IHeadeer) {
@@ -195,7 +255,9 @@ function Header({ themeState, setTheme, searchText, setSearchText }: IHeadeer) {
               <NavLink>Motion</NavLink>
             </Link>
           </Nav>
-          <button onClick={toggleBtn}>{themeState ? "light" : "dark"}</button>
+          <WhiteDarkBtn onClick={toggleBtn}>
+            {themeState ? "light" : "dark"}
+          </WhiteDarkBtn>
         </>
       )}
     </>
