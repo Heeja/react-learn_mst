@@ -24,7 +24,7 @@ const NavBox = styled.div`
   height: 80%;
   margin: 20px 0;
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
+  grid-template-columns: repeat(3, 1fr);
   grid-template-rows: ;
   grid-column-gap: 10px;
   grid-row-gap: 10px;
@@ -41,8 +41,8 @@ const NavLink = styled.div`
 `;
 
 const LinkPreImg = styled.img`
-  width: 100%;
-  height: 80%;
+  width: 320px;
+  height: 180px;
 `;
 
 const MotionDiv = styled.div`

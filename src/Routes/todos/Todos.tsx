@@ -11,6 +11,13 @@ const TodoListBox = styled.div`
   flex-direction: column;
   align-items: center;
   text-align: center;
+  margin: 10px 20px;
+
+  h1 {
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: #19a369;
+  }
 
   hr {
     width: 80%;
@@ -24,15 +31,19 @@ const Forms = styled.div`
 const BoxAddTodo = styled.div`
   display: flex;
   justify-content: center;
+
+  select {
+    min-width: 60px;
+    margin-right: 6px;
+  }
 `;
 
 const CardList = styled.div`
-  width: 80%;
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
+  grid-template-columns: repeat(4, 1fr);
   grid-column-gap: 10px;
   grid-row-gap: 10px;
-  padding: 0 8px;
+  padding: 0 20px;
 `;
 
 function Todos() {
@@ -50,8 +61,12 @@ function Todos() {
       <h1>Todo</h1>
       <hr />
       <Forms>
+        <CreateCategory setCategory={setCategory} />
         <BoxAddTodo>
           <select value={category} onInput={selectCategory}>
+            <option value="" disabled hidden>
+              Add Category
+            </option>
             {todosKeys.map((c) => (
               <option key={c} value={c}>
                 {c}
@@ -60,7 +75,6 @@ function Todos() {
           </select>
           <CreateTodo category={category} />
         </BoxAddTodo>
-        <CreateCategory setCategory={setCategory} />
       </Forms>
       <hr />
       <CardList>

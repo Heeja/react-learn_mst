@@ -8,14 +8,16 @@ import Categorys from "../../components/trello/Categorys";
 const FormBox = styled.div`
   text-align: center;
   margin: 10px 30px;
+
+  form > input {
+    min-width: 200px;
+  }
 `;
 
 const CardBox = styled.div`
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
+  justify-items: center;
+  padding: 10px 280px;
   text-align: center;
-  padding: 0 10px;
 `;
 
 interface ICategoryForm {
@@ -25,6 +27,7 @@ interface ICategoryForm {
 function Trello() {
   const [categorys, setCategorys] = useRecoilState(CategoryList);
   const setTodoList = useSetRecoilState(NTodosList);
+  console.log("rerender");
 
   const { register, handleSubmit, reset } = useForm<ICategoryForm>();
   const onSubmit: SubmitHandler<ICategoryForm> = (d) => {
@@ -104,13 +107,17 @@ function Trello() {
         <form onSubmit={handleSubmit(onSubmit)}>
           <input
             type="text"
-            placeholder="add Category"
+            placeholder="Write add Category and Enter"
             {...register("addCategory")}
           />
         </form>
       </FormBox>
 
-      <Droppable droppableId="category-filed" type="category">
+      <Droppable
+        droppableId="category-filed"
+        // direction="horizontal"
+        type="category"
+      >
         {(provided) => (
           <div ref={provided.innerRef} {...provided.droppableProps}>
             <CardBox>

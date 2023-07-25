@@ -32,6 +32,7 @@ React JS Master Class in Nomadcoders
 - React Query
 - Recoil
 - Styled Components
+- React Beautiful dnd (Trello)
 - Framer Motion
 - gh-pages
 

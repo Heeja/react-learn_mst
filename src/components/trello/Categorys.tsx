@@ -6,8 +6,7 @@ import { NTodosList } from "../../atoms";
 import Card from "./Card";
 
 const CategoryInBox = styled.div`
-  width: 140px;
-  height: 200px;
+  width: 160px;
   border: solid 0.5px rgba(40, 40, 40, 0.3);
   border-radius: 6px;
   margin: 10px 10px;
@@ -64,6 +63,12 @@ function Categorys({ category, id }: CardProps) {
       alert(`${d.addCard}라는 카드는 이미 존재합니다.`);
       return "";
     }
+    // if (cardData[category].length > 4) {
+    //   alert(
+    //     "하나의 카테고리에 5개 이상의 카드를 입력할 수 없습니다. 카드를 이동 후 추가해주세요."
+    //   );
+    //   return "";
+    // }
 
     setCardData((e) => {
       const newCard = { id: Date.now(), text: d.addCard };
