@@ -55,7 +55,7 @@ function Categorys({ category, id }: CardProps) {
 
   const { register, handleSubmit, reset } = useForm<ICardForm>();
   const onSubmit: SubmitHandler<ICardForm> = (d) => {
-    if (!d.addCard && d.addCard.length > 1) {
+    if (d.addCard.length < 2) {
       alert("2글자 이상의 카드명을 입력하세요.");
       return "";
     }
@@ -63,12 +63,6 @@ function Categorys({ category, id }: CardProps) {
       alert(`${d.addCard}라는 카드는 이미 존재합니다.`);
       return "";
     }
-    // if (cardData[category].length > 4) {
-    //   alert(
-    //     "하나의 카테고리에 5개 이상의 카드를 입력할 수 없습니다. 카드를 이동 후 추가해주세요."
-    //   );
-    //   return "";
-    // }
 
     setCardData((e) => {
       const newCard = { id: Date.now(), text: d.addCard };

@@ -1,7 +1,7 @@
-import { motion } from "framer-motion";
 import { useState } from "react";
 import { Link, useLocation, useMatch } from "react-router-dom";
 import styled, { keyframes } from "styled-components";
+import { motion } from "framer-motion";
 
 interface IHeadeer {
   themeState: boolean;
@@ -40,6 +40,19 @@ const jelloVertical = keyframes`
 100% {
   -webkit-transform: scale3d(1, 1, 1);
           transform: scale3d(1, 1, 1);
+}
+`;
+
+const tiltInRight = keyframes`
+0% {
+  -webkit-transform: rotateX(-30deg) translateX(300px) skewX(30deg);
+          transform: rotateX(-30deg) translateX(300px) skewX(30deg);
+  opacity: 0;
+}
+100% {
+  -webkit-transform: rotateX(0deg) translateX(0) skewX(0deg);
+          transform: rotateX(0deg) translateX(0) skewX(0deg);
+  opacity: 1;
 }
 `;
 
@@ -117,6 +130,22 @@ const UserIcon = styled(motion.span)`
   svg {
     height: 24px;
   }
+
+  :hover {
+    cursor: pointer;
+  }
+`;
+
+const Addmenu = styled(motion.div)<{ addMenuState: boolean }>`
+  position: absolute;
+  top: 50px;
+  right: 16px;
+  font-size: 1.6rem;
+  z-index: 1;
+  visibility: ${(props) => (props.addMenuState ? "visible" : "hidden")};
+  i {
+    color: wheat;
+  }
 `;
 
 const SearchIcon = styled.i`
@@ -157,6 +186,7 @@ function Header({ themeState, setTheme, searchText, setSearchText }: IHeadeer) {
   const tvMatch = useMatch("noflix/tv");
   const movieMatch = useMatch("noflix/movie");
 
+  const [addMenuState, setAddMenu] = useState(false);
   const [searchOpen, setOpen] = useState(false);
   const onSearchClick = () => setOpen((prev) => !prev);
 
@@ -227,7 +257,14 @@ function Header({ themeState, setTheme, searchText, setSearchText }: IHeadeer) {
             <UserIcon>
               <ProfileImg
                 src={require("../img/noflix_profile.png")}
+                onClick={() => setAddMenu((prev) => !prev)}
               ></ProfileImg>
+
+              <Addmenu addMenuState={addMenuState}>
+                <Link to={"/"} onClick={() => setAddMenu((prev) => !prev)}>
+                  <i className="fa-solid fa-house-chimney-window"></i>
+                </Link>
+              </Addmenu>
             </UserIcon>
           </RightBox>
         </HeaderBox>

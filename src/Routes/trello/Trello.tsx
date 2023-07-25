@@ -27,7 +27,6 @@ interface ICategoryForm {
 function Trello() {
   const [categorys, setCategorys] = useRecoilState(CategoryList);
   const setTodoList = useSetRecoilState(NTodosList);
-  console.log("rerender");
 
   const { register, handleSubmit, reset } = useForm<ICategoryForm>();
   const onSubmit: SubmitHandler<ICategoryForm> = (d) => {
@@ -37,6 +36,10 @@ function Trello() {
     }
     if (!d.addCategory) {
       alert("추가할 카테고리를 입력해주세요.");
+      return "";
+    }
+    if (d.addCategory.length < 2) {
+      alert("2글자 이상의 카테고리 명을 입력해주세요.");
       return "";
     }
 
