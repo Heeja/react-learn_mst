@@ -192,11 +192,8 @@ function App() {
                 path="/coins/:coinId/*"
                 element={<Cointicker themeState={themeState} />}
               >
-                <Route
-                  path="chart"
-                  element={<CoinChart coinId={""} themeState={themeState} />}
-                />
-                <Route path="price" element={<CoinPrice coinId={""} />} />
+                <Route path="chart" element={<CoinChart />} />
+                <Route path="price" element={<CoinPrice />} />
               </Route>
 
               <Route path="/todos" element={<Todos />} />

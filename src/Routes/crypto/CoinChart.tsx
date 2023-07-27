@@ -1,32 +1,44 @@
+import { useOutletContext } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
-import ApexCharts from "react-apexcharts";
 import styled from "styled-components";
+import ApexCharts from "react-apexcharts";
 
-import { nomadTicker } from "../../api/cypto";
-import { IData } from "../../sharetype";
-
-interface ChartProps {
-  coinId: string;
-  themeState: boolean;
-}
+import { ChartInfo, nomadTicker } from "../../api/cypto";
+import { CoinTickerProps, IData, IUpbitDays } from "../../sharetype";
 
 const ChartBox = styled.div`
   widht: 80%;
 `;
 
-function CoinChart({ coinId, themeState }: ChartProps) {
+function CoinChart() {
+  const { coinId, symbol, themeState } = useOutletContext<CoinTickerProps>();
   const { isLoading, data } = useQuery<IData[]>(["coinTicker"], () =>
     nomadTicker(coinId)
   );
 
-  const chartData = !data
+  const aa = useQuery<IUpbitDays[]>(["aa"], () => {
+    if (symbol === "USDT") return ChartInfo("BTC-USDT", 30);
+    return ChartInfo(`KRW-${symbol}`, 30);
+  }).data;
+  // console.log(aa);
+
+  // const chartData = !data
+  //   ? []
+  //   : data.map((chartsrc) => [
+  //       chartsrc.time_close,
+  //       parseInt(chartsrc.open),
+  //       parseInt(chartsrc.high),
+  //       parseInt(chartsrc.low),
+  //       parseInt(chartsrc.close),
+  //     ]);
+  const chartData = !aa
     ? []
-    : data.map((chartsrc) => [
-        chartsrc.time_close,
-        parseInt(chartsrc.open),
-        parseInt(chartsrc.high),
-        parseInt(chartsrc.low),
-        parseInt(chartsrc.close),
+    : aa.map((chartsrc: any) => [
+        chartsrc.candle_date_time_kst,
+        parseInt(chartsrc.opening_price),
+        parseInt(chartsrc.high_price),
+        parseInt(chartsrc.low_price),
+        parseInt(chartsrc.trade_price),
       ]);
 
   const chartSrc = {
@@ -37,7 +49,7 @@ function CoinChart({ coinId, themeState }: ChartProps) {
     ],
     options: {
       title: {
-        text: `${coinId} Chart`,
+        text: `${symbol} Chart`,
         align: "left",
       },
       xaxis: {
@@ -61,7 +73,7 @@ function CoinChart({ coinId, themeState }: ChartProps) {
           type="candlestick"
           options={{
             title: {
-              text: `${coinId} Chart`,
+              text: `${symbol} Chart`,
               align: "left",
             },
             theme: {
@@ -75,6 +87,9 @@ function CoinChart({ coinId, themeState }: ChartProps) {
             },
             tooltip: {
               enabled: true,
+              style: {
+                fontSize: "10px",
+              },
             },
           }}
           series={chartSrc.series}

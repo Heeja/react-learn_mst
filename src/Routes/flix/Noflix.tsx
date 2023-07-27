@@ -165,6 +165,23 @@ interface IPlayNow {
   poster_path: string;
 }
 
+interface ITopMovies {
+  adult: boolean;
+  backdrop_path: string;
+  genre_ids: [number];
+  id: number;
+  original_language: "en";
+  original_title: string;
+  overview: string;
+  popularity: number;
+  poster_path: string;
+  release_date: string;
+  title: string;
+  video: boolean;
+  vote_average: number;
+  vote_count: number;
+}
+
 const offset = 6;
 
 // animation
@@ -219,18 +236,18 @@ function Noflix({ themeState, setTheme }: INoflix) {
   // <{[key: string]: any}>({})
   const [playNowData, setPlayNow] = useState<IPlayNow[]>([]);
 
-  const IMAGE_URL = "https://image.tmdb.org/t/p/original";
+  // const IMAGE_URL = "https://image.tmdb.org/t/p/original";
 
   const movieNowList = async () => {
     const mainMoveData = await getMainMovie();
-    const moviesData = await getNowPlaying();
+    const nowPlayMovies = await getNowPlaying();
     const movieTrend = await trendingMovie();
     // console.log(mainMoveData);
-    // console.log(moviesData);
-    // console.log(movieTrend);
+    console.log(nowPlayMovies);
+    console.log(movieTrend);
 
     setMainMovie(mainMoveData);
-    setPlayNow(moviesData.results);
+    setPlayNow(nowPlayMovies.results);
     setLoading(false);
   };
 
@@ -303,7 +320,6 @@ function Noflix({ themeState, setTheme }: INoflix) {
                 {playNowData
                   .slice(offset * index, offset * index + offset)
                   .map((e) => {
-                    console.log(e);
                     return (
                       <SmallBox
                         key={e.id}
@@ -325,7 +341,7 @@ function Noflix({ themeState, setTheme }: INoflix) {
 
           <h2>영화 Top 10</h2>
           <Slider>
-            <ListBox></ListBox>
+            <ListBox>{}</ListBox>
           </Slider>
           <br />
 

@@ -43,19 +43,6 @@ const jelloVertical = keyframes`
 }
 `;
 
-const tiltInRight = keyframes`
-0% {
-  -webkit-transform: rotateX(-30deg) translateX(300px) skewX(30deg);
-          transform: rotateX(-30deg) translateX(300px) skewX(30deg);
-  opacity: 0;
-}
-100% {
-  -webkit-transform: rotateX(0deg) translateX(0) skewX(0deg);
-          transform: rotateX(0deg) translateX(0) skewX(0deg);
-  opacity: 1;
-}
-`;
-
 // Styled Tag
 
 const HeaderBox = styled.div`
@@ -90,7 +77,6 @@ const NavLink = styled.div<{ backColor: string }>`
   border: solid 0.2px rgba(0,0,0,0.2);
   border-radius: 6px;
 
-  
   :hover {
     animation: ${jelloVertical} 0.9s both;
   }
@@ -181,7 +167,7 @@ const WhiteDarkBtn = styled.button`
 `;
 
 function Header({ themeState, setTheme, searchText, setSearchText }: IHeadeer) {
-  const path = useLocation();
+  const path = useLocation().pathname.match("Noflix")?.[0];
   const homeMatch = useMatch("/noflix");
   const tvMatch = useMatch("noflix/tv");
   const movieMatch = useMatch("noflix/movie");
@@ -200,7 +186,7 @@ function Header({ themeState, setTheme, searchText, setSearchText }: IHeadeer) {
 
   return (
     <>
-      {path.pathname.match("Noflix") ? (
+      {path === "Noflix" ? (
         <HeaderBox>
           <Nav>
             <img
@@ -261,7 +247,13 @@ function Header({ themeState, setTheme, searchText, setSearchText }: IHeadeer) {
               ></ProfileImg>
 
               <Addmenu addMenuState={addMenuState}>
-                <Link to={"/"} onClick={() => setAddMenu((prev) => !prev)}>
+                <Link
+                  to={"/"}
+                  onClick={() => {
+                    setAddMenu((prev) => !prev);
+                    setTheme((btnTheme) => !btnTheme);
+                  }}
+                >
                   <i className="fa-solid fa-house-chimney-window"></i>
                 </Link>
               </Addmenu>
