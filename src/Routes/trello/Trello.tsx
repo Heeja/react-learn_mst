@@ -8,14 +8,16 @@ import Categorys from "../../components/trello/Categorys";
 const FormBox = styled.div`
   text-align: center;
   margin: 10px 30px;
+
+  form > input {
+    min-width: 200px;
+  }
 `;
 
 const CardBox = styled.div`
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
+  justify-items: center;
+  padding: 10px 280px;
   text-align: center;
-  padding: 0 10px;
 `;
 
 interface ICategoryForm {
@@ -34,6 +36,10 @@ function Trello() {
     }
     if (!d.addCategory) {
       alert("추가할 카테고리를 입력해주세요.");
+      return "";
+    }
+    if (d.addCategory.length < 2) {
+      alert("2글자 이상의 카테고리 명을 입력해주세요.");
       return "";
     }
 
@@ -104,13 +110,17 @@ function Trello() {
         <form onSubmit={handleSubmit(onSubmit)}>
           <input
             type="text"
-            placeholder="add Category"
+            placeholder="Write add Category and Enter"
             {...register("addCategory")}
           />
         </form>
       </FormBox>
 
-      <Droppable droppableId="category-filed" type="category">
+      <Droppable
+        droppableId="category-filed"
+        // direction="horizontal"
+        type="category"
+      >
         {(provided) => (
           <div ref={provided.innerRef} {...provided.droppableProps}>
             <CardBox>

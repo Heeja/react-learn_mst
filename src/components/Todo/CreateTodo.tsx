@@ -7,17 +7,11 @@ const FormBox = styled.form`
   display: flex;
   justify-content: center;
 
-  select {
-    width: 30%;
-    margin-right: 5px;
-  }
-
   input {
     margin-right: 5px;
   }
 
   button {
-    width: 20%;
   }
 `;
 interface IProp {

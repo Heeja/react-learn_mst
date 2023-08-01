@@ -6,8 +6,7 @@ import { NTodosList } from "../../atoms";
 import Card from "./Card";
 
 const CategoryInBox = styled.div`
-  width: 140px;
-  height: 200px;
+  width: 160px;
   border: solid 0.5px rgba(40, 40, 40, 0.3);
   border-radius: 6px;
   margin: 10px 10px;
@@ -56,7 +55,7 @@ function Categorys({ category, id }: CardProps) {
 
   const { register, handleSubmit, reset } = useForm<ICardForm>();
   const onSubmit: SubmitHandler<ICardForm> = (d) => {
-    if (!d.addCard && d.addCard.length > 1) {
+    if (d.addCard.length < 2) {
       alert("2글자 이상의 카드명을 입력하세요.");
       return "";
     }

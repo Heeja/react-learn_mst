@@ -5,9 +5,7 @@ import styled from "styled-components";
 import { CoinInfo } from "../../sharetype";
 
 import { fetchCoinInfo } from "../../api/cypto";
-import { Link, Route, Routes, useParams } from "react-router-dom";
-import CoinChart from "./CoinChart";
-import CoinPrice from "./CoinPrice";
+import { Link, Outlet, useParams } from "react-router-dom";
 
 const BigBox = styled.div`
   width: 80wh;
@@ -104,8 +102,11 @@ function Cointicker({ themeState }: tickerProps) {
 
   const { isLoading: tickersLoading, data: tickersData } = useQuery<CoinInfo>(
     ["tickers", coinId],
-    () => fetchCoinInfo(coinId!)
+    () => fetchCoinInfo(coinId!.toLowerCase())
   );
+
+  const symbol = tickersData?.symbol;
+  // console.log(tickersData);
 
   return (
     <>
@@ -146,13 +147,7 @@ function Cointicker({ themeState }: tickerProps) {
           </LinkBox>
 
           <GraphBox>
-            <Routes>
-              <Route
-                path={"chart"}
-                element={<CoinChart coinId={coinId!} themeState={themeState} />}
-              />
-              <Route path={"price"} element={<CoinPrice coinId={coinId!} />} />
-            </Routes>
+            <Outlet context={{ coinId, themeState, symbol }} />
           </GraphBox>
         </BigBox>
       )}

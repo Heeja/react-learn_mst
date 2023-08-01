@@ -1,7 +1,7 @@
-import { motion } from "framer-motion";
 import { useState } from "react";
 import { Link, useLocation, useMatch } from "react-router-dom";
 import styled, { keyframes } from "styled-components";
+import { motion } from "framer-motion";
 
 interface IHeadeer {
   themeState: boolean;
@@ -64,14 +64,16 @@ const Nav = styled.div`
   }
 `;
 
-const NavLink = styled.div`
+const NavLink = styled.div<{ backColor: string }>`
   display: flex;
   justify-content: center;
   align-items: center;
   position; relative;
   margin: 5px 10px;
   padding: 2px 6px;
-  background-color: rgba(187, 151, 255, 0.4);
+  background-color: ${(props) =>
+    props.backColor ? "" : "rgba(187, 151, 255, 0.4)"};
+  color: ${(props) => (props.backColor ? "snow" : "")};
   border: solid 0.2px rgba(0,0,0,0.2);
   border-radius: 6px;
 
@@ -114,6 +116,22 @@ const UserIcon = styled(motion.span)`
   svg {
     height: 24px;
   }
+
+  :hover {
+    cursor: pointer;
+  }
+`;
+
+const Addmenu = styled(motion.div)<{ addMenuState: boolean }>`
+  position: absolute;
+  top: 50px;
+  right: 16px;
+  font-size: 1.6rem;
+  z-index: 1;
+  visibility: ${(props) => (props.addMenuState ? "visible" : "hidden")};
+  i {
+    color: wheat;
+  }
 `;
 
 const SearchIcon = styled.i`
@@ -149,11 +167,12 @@ const WhiteDarkBtn = styled.button`
 `;
 
 function Header({ themeState, setTheme, searchText, setSearchText }: IHeadeer) {
-  const path = useLocation();
+  const path = useLocation().pathname.match("Noflix")?.[0];
   const homeMatch = useMatch("/noflix");
   const tvMatch = useMatch("noflix/tv");
   const movieMatch = useMatch("noflix/movie");
 
+  const [addMenuState, setAddMenu] = useState(false);
   const [searchOpen, setOpen] = useState(false);
   const onSearchClick = () => setOpen((prev) => !prev);
 
@@ -167,7 +186,7 @@ function Header({ themeState, setTheme, searchText, setSearchText }: IHeadeer) {
 
   return (
     <>
-      {path.pathname.match("Noflix") ? (
+      {path === "Noflix" ? (
         <HeaderBox>
           <Nav>
             <img
@@ -176,7 +195,7 @@ function Header({ themeState, setTheme, searchText, setSearchText }: IHeadeer) {
               src="https://upload.wikimedia.org/wikipedia/commons/thumb/7/75/Netflix_icon.svg/256px-Netflix_icon.svg.png"
             />
             <Link to={"/Noflix"}>
-              <NavLink>
+              <NavLink backColor="#000">
                 Home{" "}
                 {homeMatch && (
                   <CircleNFL layoutId="circle" animate={{ type: "spring" }} />
@@ -184,7 +203,7 @@ function Header({ themeState, setTheme, searchText, setSearchText }: IHeadeer) {
               </NavLink>
             </Link>
             <Link to={"Noflix/tv"}>
-              <NavLink>
+              <NavLink backColor="#000">
                 Tv/Series{" "}
                 {tvMatch && (
                   <CircleNFL layoutId="circle" animate={{ type: "spring" }} />
@@ -192,7 +211,7 @@ function Header({ themeState, setTheme, searchText, setSearchText }: IHeadeer) {
               </NavLink>
             </Link>
             <Link to={"Noflix/movie"}>
-              <NavLink>
+              <NavLink backColor="#000">
                 Movie{" "}
                 {movieMatch && (
                   <CircleNFL layoutId="circle" animate={{ type: "spring" }} />
@@ -224,7 +243,20 @@ function Header({ themeState, setTheme, searchText, setSearchText }: IHeadeer) {
             <UserIcon>
               <ProfileImg
                 src={require("../img/noflix_profile.png")}
+                onClick={() => setAddMenu((prev) => !prev)}
               ></ProfileImg>
+
+              <Addmenu addMenuState={addMenuState}>
+                <Link
+                  to={"/"}
+                  onClick={() => {
+                    setAddMenu((prev) => !prev);
+                    setTheme((btnTheme) => !btnTheme);
+                  }}
+                >
+                  <i className="fa-solid fa-house-chimney-window"></i>
+                </Link>
+              </Addmenu>
             </UserIcon>
           </RightBox>
         </HeaderBox>
@@ -232,27 +264,27 @@ function Header({ themeState, setTheme, searchText, setSearchText }: IHeadeer) {
         <>
           <Nav>
             <Link to={"/"}>
-              <NavLink>
+              <NavLink backColor="">
                 <h1>Home</h1>
               </NavLink>
             </Link>
             <Link to={"/Coins"}>
-              <NavLink>Coins</NavLink>
+              <NavLink backColor="">Coins</NavLink>
             </Link>
             <Link to={"/Todos"}>
-              <NavLink>Todos</NavLink>
+              <NavLink backColor="">Todos</NavLink>
             </Link>
 
             <Link to={"/Trello"}>
-              <NavLink>Trello</NavLink>
+              <NavLink backColor="">Trello</NavLink>
             </Link>
 
             <Link to={"/Noflix"} onClick={noflixBtn}>
-              <NavLink>Noflix</NavLink>
+              <NavLink backColor="">Noflix</NavLink>
             </Link>
 
             <Link to={"/Motion"}>
-              <NavLink>Motion</NavLink>
+              <NavLink backColor="">Motion</NavLink>
             </Link>
           </Nav>
           <WhiteDarkBtn onClick={toggleBtn}>

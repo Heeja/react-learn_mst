@@ -13,6 +13,22 @@ export interface RouteParams {
   coinId: string;
 }
 
+export interface CoinTickerProps {
+  coinId: string;
+  symbol: string;
+  themeState?: boolean;
+}
+
+export interface ICoins {
+  id: string;
+  name: string;
+  symbol: string;
+  rank: number;
+  is_new: boolean;
+  is_active: boolean;
+  type: string;
+}
+
 export interface CoinInfo {
   id: string;
   name: string;
@@ -100,4 +116,20 @@ export interface CoinInfo {
   };
   first_data_at: string;
   last_data_at: string;
+}
+
+export interface IUpbitDays {
+  market: string;
+  candle_date_time_utc: string;
+  candle_date_time_kst: string;
+  opening_price: number;
+  high_price: number;
+  low_price: number;
+  trade_price: number;
+  timestamp: number;
+  candle_acc_trade_price: number;
+  candle_acc_trade_volume: number;
+  prev_closing_price: number;
+  change_price: number;
+  change_rate: number;
 }

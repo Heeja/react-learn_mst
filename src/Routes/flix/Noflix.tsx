@@ -23,12 +23,16 @@ import {
 // Top Main
 const HomeBox = styled.div`
   width: 100%;
-  height: 600px;
+  height: 780px;
 `;
 
-const MainImg = styled.img`
+const HomeImg = styled.div<{ bgImage: string }>`
   width: 100%;
-  filter: brightness(45%);
+  height: 100%;
+  background-image: url(${(props) => props.bgImage});
+  background-size: cover;
+  background-repeat: no-repeat;
+  opacity: 0.4;
 `;
 
 const MainTitle = styled.h1`
@@ -72,7 +76,7 @@ const SmallBox = styled(motion.div)<{ bgImage: string }>`
   background-image: url(${(props) => props.bgImage});
   background-size: cover;
   background-position: center center;
-  height: 100px;
+  height: 120px;
   font-size: 66px;
 `;
 
@@ -87,7 +91,7 @@ const SmallArrowBox = styled.span`
   align-items: center;
   position: absolute;
   width: 60px;
-  height: 100px;
+  height: 120px;
 
   font-size: 3vw;
 
@@ -161,6 +165,23 @@ interface IPlayNow {
   poster_path: string;
 }
 
+interface ITopMovies {
+  adult: boolean;
+  backdrop_path: string;
+  genre_ids: [number];
+  id: number;
+  original_language: "en";
+  original_title: string;
+  overview: string;
+  popularity: number;
+  poster_path: string;
+  release_date: string;
+  title: string;
+  video: boolean;
+  vote_average: number;
+  vote_count: number;
+}
+
 const offset = 6;
 
 // animation
@@ -215,16 +236,18 @@ function Noflix({ themeState, setTheme }: INoflix) {
   // <{[key: string]: any}>({})
   const [playNowData, setPlayNow] = useState<IPlayNow[]>([]);
 
-  const IMAGE_URL = "https://image.tmdb.org/t/p/original";
+  // const IMAGE_URL = "https://image.tmdb.org/t/p/original";
 
   const movieNowList = async () => {
     const mainMoveData = await getMainMovie();
-    const moviesData = await getNowPlaying();
+    const nowPlayMovies = await getNowPlaying();
     const movieTrend = await trendingMovie();
-    console.log(moviesData);
+    // console.log(mainMoveData);
+    console.log(nowPlayMovies);
+    console.log(movieTrend);
 
     setMainMovie(mainMoveData);
-    setPlayNow(moviesData.results);
+    setPlayNow(nowPlayMovies.results);
     setLoading(false);
   };
 
@@ -254,7 +277,7 @@ function Noflix({ themeState, setTheme }: INoflix) {
       {loading ? (
         <MainTitle>"Loading......."</MainTitle>
       ) : pathName === "/Noflix" ? (
-        <HomeBox>
+        <>
           <link rel="preconnect" href="https://fonts.googleapis.com" />
           <link
             rel="preconnect"
@@ -265,17 +288,18 @@ function Noflix({ themeState, setTheme }: INoflix) {
             href="https://fonts.googleapis.com/css2?family=Montserrat:wght@200&family=Padyakke+Expanded+One&display=swap"
             rel="stylesheet"
           />
-
-          <div>
-            <MainImg
-              src={require("../../img/noflix/aHFgoGZ2VQNY45nJWGcBvszaMXz.jpg")}
-              alt="dune-2021"
+          <HomeBox>
+            <HomeImg
+              bgImage={makeImagePath(mainMovie.backdrop_path, "original")}
             />
-            <MainTitle>
-              {mainMovie.original_title} -{mainMovie.release_date.slice(0, 4)}
-            </MainTitle>
-            <MainSubText>{mainMovie.overview}</MainSubText>
-          </div>
+            <div>
+              <MainTitle>
+                {mainMovie.original_title} -{mainMovie.release_date.slice(0, 4)}
+              </MainTitle>
+              <MainSubText>{mainMovie.overview}</MainSubText>
+            </div>
+          </HomeBox>
+
           <br />
           <h2>Play Now!!!</h2>
           <Slider>
@@ -317,7 +341,7 @@ function Noflix({ themeState, setTheme }: INoflix) {
 
           <h2>영화 Top 10</h2>
           <Slider>
-            <ListBox></ListBox>
+            <ListBox>{}</ListBox>
           </Slider>
           <br />
 
@@ -338,7 +362,7 @@ function Noflix({ themeState, setTheme }: INoflix) {
             <ListBox></ListBox>
           </Slider>
           <br />
-        </HomeBox>
+        </>
       ) : (
         <Outlet />
       )}

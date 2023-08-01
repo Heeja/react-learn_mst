@@ -32,10 +32,18 @@ React JS Master Class in Nomadcoders
 - React Query
 - Recoil
 - Styled Components
+- React Beautiful dnd (Trello)
+- apexcharts (Crpto - Coins)
 - Framer Motion
 - gh-pages
 
 ## API
 
-1. Crypto Page: UPBit API
-2. Noflix Page: themoviedb API
+1. Crypto Page
+
+- UPBit API
+- Coin Paprica API
+
+2. Noflix Page
+
+- themoviedb API

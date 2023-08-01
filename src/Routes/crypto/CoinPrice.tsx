@@ -1,12 +1,11 @@
 import { useQuery } from "@tanstack/react-query";
-import { nomadTicker } from "../../api/cypto";
-import { IData } from "../../sharetype";
+import { useOutletContext } from "react-router-dom";
 import styled from "styled-components";
 
-interface priceProps {
-  coinId: string;
-}
+import { ChartInfo } from "../../api/cypto";
+import { IUpbitDays, CoinTickerProps } from "../../sharetype";
 
+// styled
 const PriceBox = styled.div`
   text-align: center;
 
@@ -22,21 +21,33 @@ const PriceInfoBox = styled.div`
   margin: 2px 10px;
 `;
 
-const PrcieInfo = styled.div`
+const PrcieInfo = styled.div<{ price?: number }>`
   margin: 2px 10px;
+  color: ${(props) => {
+    if (!props.price) return "";
+    if (props.price && props.price < 0) return "tomato";
+    if (props.price && props.price > 0) return "cornflowerblue";
+  }};
 `;
 
-function CoinPrice({ coinId }: priceProps) {
-  const { isLoading, data } = useQuery<IData[]>(["coinTicker"], () =>
-    nomadTicker(coinId)
-  );
+function CoinPrice() {
+  const { symbol } = useOutletContext<CoinTickerProps>();
+  const { isLoading, data } = useQuery<IUpbitDays[]>(["daysPrices"], () => {
+    if (symbol === "USDT") return ChartInfo("USDT-BTC", 30);
+    return ChartInfo(`KRW-${symbol}`, 30);
+  });
 
   const dataDate = data
-    ? data?.map((e) => [
-        new Date(e.time_close).getHours().toString().padStart(2, "0"),
-        new Date(e.time_close).getMinutes().toString().padStart(2, "0"),
-        new Date(e.time_close).getSeconds().toString().padStart(2, "0"),
-      ])
+    ? data.map((e) => {
+        const formatDate = new Date(e.candle_date_time_kst);
+        const dateData = new Intl.DateTimeFormat("ko-KR", {
+          weekday: "short",
+          year: "numeric",
+          month: "2-digit",
+          day: "2-digit",
+        }).format(formatDate);
+        return dateData;
+      })
     : "";
 
   return (
@@ -45,14 +56,16 @@ function CoinPrice({ coinId }: priceProps) {
         <h1>"Loading..."</h1>
       ) : (
         <>
-          <h1>{coinId} Price</h1>
+          <h1>{symbol} Price</h1>
           <hr />
           <PriceInfoBox>
             <PrcieInfo>
               <h2>시간</h2>
             </PrcieInfo>
             <PrcieInfo>
-              <h2>가격(ETH/USD)</h2>
+              <h2>
+                가격({symbol === "USDT" ? "USD" : "KRW"}/{symbol})
+              </h2>
             </PrcieInfo>
             <PrcieInfo>
               <h2>대비</h2>
@@ -62,15 +75,23 @@ function CoinPrice({ coinId }: priceProps) {
           {data?.map((e, index) => (
             <PriceInfoBox key={index}>
               <PrcieInfo>
+                <p>{dataDate[index]}</p>
+              </PrcieInfo>
+              <PrcieInfo price={e.trade_price}>
                 <p>
-                  {dataDate[index][0]}:{dataDate[index][1]}:{dataDate[index][2]}
+                  {symbol === "USDT" ? "$" : "₩"}{" "}
+                  {e.trade_price.toString().length > 3
+                    ? e.trade_price.toLocaleString()
+                    : e.trade_price}
                 </p>
               </PrcieInfo>
-              <PrcieInfo>
-                <p>${e.close}</p>
-              </PrcieInfo>
-              <PrcieInfo>
-                <p>{(parseFloat(e.close) - parseFloat(e.open)).toFixed(2)}</p>
+              <PrcieInfo price={e.change_price}>
+                <p>
+                  {symbol === "USDT" ? "$" : "₩"}{" "}
+                  {e.trade_price.toString().length > 3
+                    ? e.trade_price.toLocaleString()
+                    : e.trade_price}
+                </p>
               </PrcieInfo>
             </PriceInfoBox>
           ))}

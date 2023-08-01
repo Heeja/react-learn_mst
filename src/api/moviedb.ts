@@ -23,49 +23,49 @@ export function getMovies() {
 
 // Dune (2021) Info.
 export function getMainMovie() {
-  return fetch(`${BASIC_URL}/movie/438631?${LANG}`, options).then((res) =>
-    res.json()
+  return fetch(`${BASIC_URL}/movie/438631?api_key=${API_KEY}&${LANG}`).then(
+    (res) => res.json()
   );
 }
 
 export function getNowPlaying() {
-  return fetch(`${BASIC_URL}/movie/now_playing?${LANG}&page=1`, options).then(
-    (res) => res.json()
-  );
+  return fetch(
+    `${BASIC_URL}/movie/now_playing?api_key=${API_KEY}&${LANG}&page=1`
+  ).then((res) => res.json());
 }
 
 export function getmoviesTop() {
-  return fetch(`${BASIC_URL}/movie/top_rated?${LANG}&page=1`, options).then(
-    (res) => res.json()
-  );
+  return fetch(
+    `${BASIC_URL}/movie/top_rated?api_key=${API_KEY}&${LANG}&page=1`
+  ).then((res) => res.json());
 }
 
 // Movie Day Treding
 export function trendingMovie() {
-  return fetch(`${BASIC_URL}/trending/movie/day?${LANG}`, options).then((res) =>
-    res.json()
-  );
+  return fetch(
+    `${BASIC_URL}/trending/movie/day?api_key=${API_KEY}&${LANG}`
+  ).then((res) => res.json());
 }
 
 // All Trending Video
 export function allTrending() {
-  return fetch(`${BASIC_URL}/trending/all/day?${LANG}`, options).then((res) =>
-    res.json()
+  return fetch(`${BASIC_URL}/trending/all/day?api_key=${API_KEY}&${LANG}`).then(
+    (res) => res.json()
   );
 }
 
 // TV, Seriese, Season Data
 
 export function getTvTop() {
-  return fetch(`${BASIC_URL}/tv/top_rated?${LANG}&page=1`, options).then(
-    (res) => res.json()
-  );
+  return fetch(
+    `${BASIC_URL}/tv/top_rated?api_key=${API_KEY}&${LANG}&page=1`
+  ).then((res) => res.json());
 }
 
 // TV Treding
 export function trendingTV() {
-  return fetch(`${BASIC_URL}/trending/tv/day?${LANG}`, options).then((res) =>
-    res.json()
+  return fetch(`${BASIC_URL}/trending/tv/day?api_key=${API_KEY}&${LANG}`).then(
+    (res) => res.json()
   );
 }
 

@@ -6,7 +6,11 @@ import { RTodoList } from "../../atoms";
 const FormBox = styled.form`
   display: flex;
   justify-content: center;
-  margin-top: 10px;
+  margin-bottom: 10px;
+
+  input {
+    min-width: 180px;
+  }
 `;
 
 interface IProp {
@@ -44,7 +48,7 @@ function CreateCategory({ setCategory }: IProp) {
           name="addCategory"
           value={addCategory}
           onChange={onChange}
-          placeholder="Write Category name..."
+          placeholder="Write Category and Enter..."
         />
       </FormBox>
     </>
