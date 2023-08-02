@@ -28,6 +28,8 @@ const LinkBox = styled(Link)`
   grid-template-columns: repeat(2, 1fr) 3fr;
   grid-column-gap: 2px;
   grid-row-gap: 2px;
+  align-items: center;
+  justify-items: center;
   margin: 10px 0;
 
   span {

@@ -30,6 +30,11 @@ function CreateCategory({ setCategory }: IProp) {
     setTodoList((allTodos) => {
       const keys = Object.keys(allTodos);
 
+      if (addCategory.length > 12) {
+        alert("카테고리 이름이 너무 깁니다. 12자 이내로 작성해주세요.");
+        return { ...allTodos };
+      }
+
       if (keys.find((categ) => categ === addCategory)) {
         alert(`${addCategory}라는 카테고리는 이미 존재합니다.`);
         return { ...allTodos };
