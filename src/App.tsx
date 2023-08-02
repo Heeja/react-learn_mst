@@ -186,6 +186,10 @@ function App() {
           <RecoilRoot>
             <Routes>
               <Route path="/" element={<Home setTheme={setTheme} />} />
+              <Route
+                path="/react-learn_mst"
+                element={<Home setTheme={setTheme} />}
+              />
 
               <Route path="/coins" element={<Coins />} />
               <Route

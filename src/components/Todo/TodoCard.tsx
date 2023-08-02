@@ -53,8 +53,6 @@ const CardBox = styled.div`
     font-size: 0.8rem;
     font-weight: 500;
     color: teal;
-    min-width: 100px;
-    min-height: 20px;
     border: none;
     border-radius: 10px;
     background-color: antiquewhite;
@@ -63,12 +61,13 @@ const CardBox = styled.div`
 
 const BtnBox = styled.div`
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(2, 1fr);
   gap: 6px;
   margin-top: 10px;
   margin-bottom: 5px;
 
   button {
+    min-width: 40px;
     :hover {
       animation: ${heartbeat} 1.2s ease-out both;
     }

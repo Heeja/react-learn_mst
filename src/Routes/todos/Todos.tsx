@@ -37,13 +37,23 @@ const BoxAddTodo = styled.div`
     margin-right: 6px;
   }
 `;
-
 const CardList = styled.div`
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
   grid-column-gap: 10px;
   grid-row-gap: 10px;
   padding: 0 20px;
+  @media screen and (max-width: 650px) {
+    grid-template-columns: repeat(1, 1fr);
+  }
+  @media screen and (min-width: 651px) and (max-width: 999px) {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  @media screen and (min-width: 1000px) and (max-width: 1400px) {
+    grid-template-columns: repeat(3, 1fr);
+  }
+  @media screen and (min-width: 1400px) {
+    grid-template-columns: repeat(4, 1fr);
+  }
 `;
 
 function Todos() {
