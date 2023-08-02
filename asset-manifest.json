@@ -1,11 +1,11 @@
 {
   "files": {
-    "main.js": "/react-learn_mst/static/js/main.dac82e8f.js",
+    "main.js": "/react-learn_mst/static/js/main.35c1314e.js",
     "static/media/coins.jpeg": "/react-learn_mst/static/media/coins.35dcc57ca474ba54a78b.jpeg",
     "index.html": "/react-learn_mst/index.html",
-    "main.dac82e8f.js.map": "/react-learn_mst/static/js/main.dac82e8f.js.map"
+    "main.35c1314e.js.map": "/react-learn_mst/static/js/main.35c1314e.js.map"
   },
   "entrypoints": [
-    "static/js/main.dac82e8f.js"
+    "static/js/main.35c1314e.js"
   ]
 }
