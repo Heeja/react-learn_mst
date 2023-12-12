@@ -4,6 +4,8 @@ React JS Master Class in Nomadcoders
 
 ---
 
+View page: https://heeja.github.io/react-learn_mst/
+
 ## 목적
 
 - React.JS 익숙해지는 훈련

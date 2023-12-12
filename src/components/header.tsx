@@ -68,13 +68,13 @@ const NavLink = styled.div<{ backColor: string }>`
   display: flex;
   justify-content: center;
   align-items: center;
-  position; relative;
+  position: relative;
   margin: 5px 10px;
   padding: 2px 6px;
   background-color: ${(props) =>
     props.backColor ? "" : "rgba(187, 151, 255, 0.4)"};
   color: ${(props) => (props.backColor ? "snow" : "")};
-  border: solid 0.2px rgba(0,0,0,0.2);
+  border: solid 0.2px rgba(0, 0, 0, 0.2);
   border-radius: 6px;
 
   :hover {
@@ -122,20 +122,20 @@ const UserIcon = styled(motion.span)`
   }
 `;
 
-const Addmenu = styled(motion.div)<{ addMenuState: boolean }>`
+const Addmenu = styled(motion.div)<{ addmenu: boolean }>`
   position: absolute;
   top: 50px;
   right: 16px;
   font-size: 1.6rem;
   z-index: 1;
-  visibility: ${(props) => (props.addMenuState ? "visible" : "hidden")};
+  visibility: ${(props) => (props.addmenu ? "visible" : "hidden")};
   i {
     color: wheat;
   }
 `;
 
 const SearchIcon = styled.i`
-  tion: absolute;
+  position: absolute;
   align-items: center;
   font-size: 22px;
 `;
@@ -246,7 +246,7 @@ function Header({ themeState, setTheme, searchText, setSearchText }: IHeadeer) {
                 onClick={() => setAddMenu((prev) => !prev)}
               ></ProfileImg>
 
-              <Addmenu addMenuState={addMenuState}>
+              <Addmenu addmenu={addMenuState}>
                 <Link
                   to={"/"}
                   onClick={() => {
