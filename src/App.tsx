@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { createGlobalStyle, ThemeProvider } from "styled-components";
@@ -170,6 +170,15 @@ function App() {
   const queryClient = new QueryClient();
   const [themeState, setTheme] = useState(false);
   const [searchText, setSearchText] = useState("");
+  const location = window.location.pathname;
+
+  useEffect(() => {
+    if (location.match("Noflix")) {
+      setTheme(true);
+    } else {
+      setTheme(false);
+    }
+  }, []);
 
   return (
     <ThemeProvider theme={themeState ? darkTheme : whiteTheme}>
@@ -204,10 +213,7 @@ function App() {
 
               <Route path="/Trello" element={<Trello />} />
 
-              <Route
-                path="/Noflix"
-                element={<Noflix themeState={themeState} setTheme={setTheme} />}
-              >
+              <Route path="/Noflix" element={<Noflix />}>
                 <Route path="tv" element={<Tv />} />
                 <Route path="movie" element={<Movie />} />
                 <Route path="search" element={<Search />} />

@@ -4,6 +4,8 @@ React JS Master Class in Nomadcoders
 
 ---
 
+View page: https://heeja.github.io/react-learn_mst/
+
 ## 목적
 
 - React.JS 익숙해지는 훈련
@@ -15,6 +17,13 @@ React JS Master Class in Nomadcoders
   - Todo List
   - Tello
   - NoFlix
+
+## 프로젝트를 통한 배움
+
+- 단순한 Copy 프로젝트이지만 강의 내용을 넘어서 어떻게 더 좋게 만들지, 합리적으로 구현할 지 생각하게 될 수 있는 시간이었다.
+  - 강의에서는 각 기능별로 사이트를 만들었지만 이번 프로젝트에서는 하나로 통합시켰다.
+  - 기능의 구현에도 유저입장에서 사용할 때 불편함을 줄이고, 기능의 목적에 포커스를 맞추려고 노력할 수 있었다.
+- UPBit API를 추가로 사용하면서 자산을 관리하는 부분까지는 사용하지 못했지만 레퍼런스를 참고하며 데이터를 다루고 기능을 구현하는데 재미있었다.
 
 ## 페이지 구성 및 기능 목적
 

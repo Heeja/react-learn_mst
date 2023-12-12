@@ -59,29 +59,30 @@ const Slider = styled.div`
   height: 100px;
 `;
 
-const ListBox = styled(motion.div)`
+const ListBox = styled(motion.div)<{ offset: number }>`
   width: 100%;
   display: grid;
   gap: 10px;
-  grid-template-columns: repeat(6, 1fr);
+  grid-template-columns: repeat(${(props) => props.offset}, 1fr);
   margin-bottom: 10px;
   position: absolute;
   padding: 0 60px;
 `;
 
-const SmallBox = styled(motion.div)<{ bgImage: string }>`
+const SmallBox = styled(motion.div)<{ bgimage: string }>`
   padding: 0 0.2vw;
   transition: all 0.3s ease-in-out;
   background-color: white;
-  background-image: url(${(props) => props.bgImage});
+  background-image: url(${(props) => props.bgimage});
   background-size: cover;
   background-position: center center;
   height: 120px;
-  font-size: 66px;
+  // font-size: 66px;
+  color: black;
 `;
 
 const SmallArrowBox = styled.span`
-  role="button";
+  role: button;
   background: hsla(0, 0%, 8%, 0.3);
   border-bottom-left-radius: 4px;
   border-top-left-radius: 4px;
@@ -92,6 +93,7 @@ const SmallArrowBox = styled.span`
   position: absolute;
   width: 60px;
   height: 120px;
+  z-index: 1;
 
   font-size: 3vw;
 
@@ -104,42 +106,13 @@ const SmallArrowBox = styled.span`
   }
 `;
 
-const SmallTextBox = styled.div`
-  position: absolute;
-  background-size: cover;
-  background-position: center center;
-  height: 200px;
-  border-radius: 4px;
-  color: snow;
-
-  p {
-    font-size: 1.2em;
-    height: 100%;
-    background-color: #222;
-    background-image: linear-gradient(transparent, #000);
-  }
-`;
-
 // Movie Top list
 
 // Tv Top List
 
 // rate Top List
 
-const SearchInput = styled(motion.input)`
-  height: 20px;
-  position: absolute;
-  left: -120px;
-
-  transform-origin: right center;
-`;
-
 // typescript Interface
-interface INoflix {
-  themeState: boolean;
-  setTheme: Dispatch<SetStateAction<boolean>>;
-}
-
 interface IMainMovie {
   backdrop_path: string;
   genres: Object;
@@ -182,12 +155,6 @@ interface ITrendMovies {
   vote_count: number;
 }
 
-interface IIndexArray {
-  [key: string]: number;
-}
-
-const offset = 6;
-
 // animation
 const rowVariants = {
   hidden: {
@@ -216,12 +183,27 @@ const boxVariants = {
   },
 };
 
-function Noflix({ themeState, setTheme }: INoflix) {
-  if (!themeState) setTheme(true);
+function Noflix() {
   const path = useLocation();
   const pathName = path.pathname;
 
   const [loading, setLoading] = useState(true);
+
+  // windows size action
+  const [winSize, setWinSize] = useState(window.innerWidth);
+  const handleWinsize = () => {
+    setWinSize(window.innerWidth);
+  };
+
+  useEffect(() => {
+    window.addEventListener("resize", handleWinsize);
+    return () => {
+      // cleanup
+      window.removeEventListener("resize", handleWinsize);
+    };
+  }, []);
+  const offset = winSize < 1160 ? (winSize < 980 ? 4 : 5) : 6;
+
   // Contents Data
   const [mainMovie, setMainMovie] = useState<IMainMovie>({
     backdrop_path: "",
@@ -248,12 +230,12 @@ function Noflix({ themeState, setTheme }: INoflix) {
     const mainMoveData = await getMainMovie();
     const nowPlayMovies = await getNowPlaying();
     const movieTrend = await trendingMovie();
-    // console.log(movieTrend);
 
     setMainMovie(mainMoveData);
     setPlayNow(nowPlayMovies.results);
     setTrend(movieTrend.results);
     setLoading(false);
+    console.log(playNowData.map((e) => [e.title, e.id]));
   };
 
   useEffect(() => {
@@ -261,31 +243,25 @@ function Noflix({ themeState, setTheme }: INoflix) {
   }, []);
 
   // function
-  const increaseIndex = (
+  const changeIndex = (
     props: string,
+    direction: string,
     e: React.MouseEvent<HTMLSpanElement, MouseEvent>
   ) => {
-    // console.log(props);
     if (props === "main") {
-      if (playNowData) {
-        // if (leaving) return;
-        // toggleLeaving();
-        const totalMovies = playNowData.length - 1;
-        const maxIndex = Math.floor(totalMovies / offset) - 1;
-
-        console.log("props", props, "index:", mainIndex);
-
+      const totalMovies = playNowData.length;
+      const maxIndex = Math.floor(totalMovies / offset) - 1;
+      if (direction === "right") {
         setMainIndex((prev) => (prev === maxIndex ? (prev = 0) : (prev += 1)));
-
-        console.log(mainIndex);
       }
-    } else if (props == "trend") {
-      if (trendMovies) {
-        const totalMovies = trendMovies.length - 1;
-        const maxIndex = Math.floor(totalMovies / offset) - 1;
-
-        setTrendIndex((prev) => (prev === maxIndex ? (prev = 0) : (prev += 1)));
+      if (direction === "left") {
+        setMainIndex((prev) => (prev <= 0 ? (prev = maxIndex) : (prev -= 1)));
       }
+    } else if (props === "trend") {
+      const totalMovies = trendMovies.length;
+      const maxIndex = Math.floor(totalMovies / offset) - 1;
+
+      setTrendIndex((prev) => (prev === maxIndex ? (prev = 0) : (prev += 1)));
     }
   };
 
@@ -320,18 +296,21 @@ function Noflix({ themeState, setTheme }: INoflix) {
           </HomeBox>
 
           <br />
+          <h2>{winSize}</h2>
+          <br />
           <h2>Play Now!!!</h2>
           <Slider>
             <AnimatePresence initial={false}>
-              {mainIndex ? null : (
+              {mainIndex === 0 ? null : (
                 <SmallArrowBox
                   style={{ left: 0 }}
-                  onClick={(e) => increaseIndex("main", e)}
+                  onClick={(e) => changeIndex("main", "left", e)}
                 >
                   <FontAwesomeIcon icon={faAngleLeft} size="xl" />
                 </SmallArrowBox>
               )}
               <ListBox
+                offset={offset}
                 key={mainIndex}
                 variants={rowVariants}
                 initial="hidden"
@@ -349,14 +328,14 @@ function Noflix({ themeState, setTheme }: INoflix) {
                         whileHover="hover"
                         initial="normal"
                         transition={{ type: "tween" }}
-                        bgImage={makeImagePath(e.backdrop_path, "w500")}
+                        bgimage={makeImagePath(e.backdrop_path, "w500")}
                       ></SmallBox>
                     );
                   })}
               </ListBox>
               <SmallArrowBox
                 style={{ right: 0 }}
-                onClick={(e) => increaseIndex("main", e)}
+                onClick={(e) => changeIndex("main", "right", e)}
               >
                 <FontAwesomeIcon icon={faAngleRight} size="xl" />
               </SmallArrowBox>
@@ -370,12 +349,13 @@ function Noflix({ themeState, setTheme }: INoflix) {
               {trendIndex === 0 ? null : (
                 <SmallArrowBox
                   style={{ left: 0 }}
-                  onClick={(e) => increaseIndex("trend", e)}
+                  onClick={(e) => changeIndex("trend", "left", e)}
                 >
                   <FontAwesomeIcon icon={faAngleLeft} size="xl" />
                 </SmallArrowBox>
               )}
               <ListBox
+                offset={offset}
                 key={trendIndex}
                 variants={rowVariants}
                 initial="hidden"
@@ -383,7 +363,7 @@ function Noflix({ themeState, setTheme }: INoflix) {
                 exit="exit"
                 transition={{ type: "tween", duration: 1 }}
               >
-                {trendMovies
+                {/* {trendMovies
                   .slice(offset * trendIndex, offset * trendIndex + offset)
                   .map((e) => {
                     return (
@@ -393,14 +373,14 @@ function Noflix({ themeState, setTheme }: INoflix) {
                         whileHover="hover"
                         initial="normal"
                         transition={{ type: "tween" }}
-                        bgImage={makeImagePath(e.backdrop_path, "w500")}
+                        bgimage={makeImagePath(e.backdrop_path, "w500")}
                       ></SmallBox>
                     );
-                  })}
+                  })} */}
               </ListBox>
               <SmallArrowBox
                 style={{ right: 0 }}
-                onClick={(e) => increaseIndex("trend", e)}
+                onClick={(e) => changeIndex("trend", "right", e)}
               >
                 <FontAwesomeIcon icon={faAngleRight} size="xl" />
               </SmallArrowBox>
@@ -410,19 +390,19 @@ function Noflix({ themeState, setTheme }: INoflix) {
 
           <h2>Tv, 드라마 Top 10</h2>
           <Slider>
-            <ListBox></ListBox>
+            <ListBox offset={offset}></ListBox>
           </Slider>
           <br />
 
           <h2>"[] []"장르 추천</h2>
           <Slider>
-            <ListBox></ListBox>
+            <ListBox offset={offset}></ListBox>
           </Slider>
           <br />
 
           <h2>기타 콘텐츠</h2>
           <Slider>
-            <ListBox></ListBox>
+            <ListBox offset={offset}></ListBox>
           </Slider>
           <br />
         </>
